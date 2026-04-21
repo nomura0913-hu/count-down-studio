@@ -985,7 +985,7 @@ export default function Manage() {
       className="h-full flex flex-col relative pt-[4.5rem]"
       style={{
         fontFamily: UI_FONT,
-        background: "linear-gradient(180deg, #141418 0%, #101014 50%, #141418 100%)",
+        background: "#262624",
       }}
       onDrop={handleFileDrop}
       onDragOver={handleFileDragOver}

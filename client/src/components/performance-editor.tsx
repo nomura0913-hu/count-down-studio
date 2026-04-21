@@ -596,9 +596,10 @@ export function PerformanceEditor({
 
   return (
     <div className="flex h-full" style={{ background: "#262624" }} data-testid="performance-editor">
+      {/* LEFT: External display preview - MUST be pure black to accurately mirror the projector output */}
       <div
         className="flex flex-col shrink-0 w-1/2"
-        style={{ background: "#262624" }}
+        style={{ background: "#000" }}
       >
         <div className="flex-1 flex flex-col items-center justify-center min-h-0">
           <div
@@ -728,7 +729,7 @@ export function PerformanceEditor({
         className="flex-1 flex flex-col min-w-0 pt-[4.5rem]"
         style={{
           borderLeft: "1px solid rgba(255,255,255,0.06)",
-          background: "linear-gradient(180deg, #141418 0%, #101014 100%)",
+          background: "#262624",
         }}
         onDrop={handleEditorDrop}
         onDragOver={handleEditorDragOver}
@@ -758,7 +759,7 @@ export function PerformanceEditor({
         </div>
 
         <div ref={editorScrollRef} className="flex-1 overflow-y-scroll min-h-0">
-          <div className="sticky top-0 z-20" style={{ background: "linear-gradient(180deg, #141418 0%, #101014 100%)" }}>
+          <div className="sticky top-0 z-20" style={{ background: "#262624" }}>
             <div
               className="px-2 py-3 relative"
               style={{

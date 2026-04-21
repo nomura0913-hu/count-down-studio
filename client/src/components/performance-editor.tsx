@@ -596,15 +596,16 @@ export function PerformanceEditor({
 
   return (
     <div className="flex h-full" style={{ background: "#262624" }} data-testid="performance-editor">
-      {/* LEFT: External display preview - MUST be pure black to accurately mirror the projector output */}
+      {/* LEFT: External display preview container (warm gray).
+          Only the 16:9 preview rectangle itself is pure black to mirror the projector output. */}
       <div
         className="flex flex-col shrink-0 w-1/2"
-        style={{ background: "#000" }}
+        style={{ background: "#262624" }}
       >
         <div className="flex-1 flex flex-col items-center justify-center min-h-0">
           <div
             className="shrink-0 relative w-full"
-            style={{ aspectRatio: "16 / 9" }}
+            style={{ aspectRatio: "16 / 9", background: "#000" }}
           >
             {showingEventInfo ? (
               <EventInfoDisplay

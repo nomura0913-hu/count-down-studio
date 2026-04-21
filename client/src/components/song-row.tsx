@@ -305,21 +305,26 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group ${isCurrent ? "bg-fuchsia-500/10" : ""}`}
       style={{
         ...sortableStyle,
-        // Each row is a distinct card on the warm-gray canvas
-        background: isEncore
-          ? (isCurrent ? "rgba(34,197,94,0.18)" : "#2a2d28")          // green tinted surface
-          : isMC
-            ? (isCurrent ? "rgba(56,189,248,0.18)" : "#262a2d")       // sky tinted surface
-            : isEvent
-              ? (isCurrent ? "rgba(234,179,8,0.18)" : "#2d2b23")     // yellow tinted surface
-              : (isCurrent ? "rgba(232,121,249,0.14)" : "#2e2e2b"),  // default surface
-        borderBottom: isLast ? "1px solid #46463f" : "1px solid #383835",
+        // Claude-style: all rows share the same surface color, only left accent stripe differs.
+        // Active state = subtle fuchsia tint, NOT a saturated tint on every row.
+        background: isCurrent
+          ? (isEncore
+              ? "rgba(129,199,132,0.10)"  // subtle green
+              : isMC
+                ? "rgba(90,200,250,0.10)" // subtle cyan
+                : isEvent
+                  ? "rgba(255,213,79,0.10)" // subtle yellow
+                  : "rgba(232,121,249,0.10)") // subtle fuchsia
+          : "#2e2e2b", // ALL rows: same warm gray surface (no saturated tints)
+        borderRadius: "8px",                          // card-like corners
+        marginBottom: "4px",                          // gap between cards
+        border: "1px solid #3d3d3a",                  // visible warm border
         borderLeft: isEncore
-          ? "3px solid rgba(34,197,94,0.7)"
+          ? "3px solid #81c784"                       // green stripe
           : isMC
-            ? "3px solid rgba(56,189,248,0.7)"
+            ? "3px solid #5ac8fa"                     // cyan stripe
             : isEvent
-              ? "3px solid rgba(250,204,21,0.7)"
+              ? "3px solid #ffd54f"                   // yellow stripe
               : (isCurrent ? "3px solid #e879f9" : "3px solid transparent"),
       }}
       data-testid={`${pid}-song-${song.id}`}
@@ -611,8 +616,8 @@ export function AddSongButton({ onClick, disabled = false, variant = "full", tes
         disabled={disabled}
         className="flex items-center gap-1.5 px-3 py-1 rounded-full text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
-          background: "linear-gradient(135deg, rgba(192,38,211,0.6), rgba(168,85,247,0.4))",
-          border: "1px solid rgba(232,121,249,0.25)",
+          background: "transparent",
+          border: "1px dashed #46463f",
         }}
         data-testid={testId}
       >
@@ -628,9 +633,8 @@ export function AddSongButton({ onClick, disabled = false, variant = "full", tes
       disabled={disabled}
       className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-white font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
-        background: "linear-gradient(135deg, rgba(192,38,211,0.7), rgba(168,85,247,0.5))",
-        border: "1px solid rgba(232,121,249,0.3)",
-        boxShadow: "0 0 20px rgba(232,121,249,0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
+        background: "transparent",
+        border: "1px dashed #46463f",
       }}
       data-testid={testId}
     >
@@ -657,8 +661,8 @@ export function AddMCButton({ onClick, disabled = false, variant = "full", testI
         disabled={disabled}
         className="flex items-center gap-1.5 px-3 py-1 rounded-full text-sky-300 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
-          background: "linear-gradient(135deg, rgba(56,189,248,0.4), rgba(14,165,233,0.25))",
-          border: "1px solid rgba(125,211,252,0.25)",
+          background: "transparent",
+          border: "1px dashed #46463f",
         }}
         data-testid={testId}
       >
@@ -674,9 +678,8 @@ export function AddMCButton({ onClick, disabled = false, variant = "full", testI
       disabled={disabled}
       className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sky-300 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
-        background: "linear-gradient(135deg, rgba(56,189,248,0.5), rgba(14,165,233,0.35))",
-        border: "1px solid rgba(125,211,252,0.3)",
-        boxShadow: "0 0 20px rgba(56,189,248,0.12), inset 0 1px 0 rgba(255,255,255,0.1)",
+        background: "transparent",
+        border: "1px dashed #46463f",
       }}
       data-testid={testId}
     >
@@ -703,8 +706,8 @@ export function AddSpecialButton({ onClick, disabled = false, variant = "full", 
         disabled={disabled}
         className="flex items-center gap-1.5 px-3 py-1 rounded-full text-yellow-300 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
-          background: "linear-gradient(135deg, rgba(234,179,8,0.5), rgba(202,138,4,0.3))",
-          border: "1px solid rgba(250,204,21,0.25)",
+          background: "transparent",
+          border: "1px dashed #46463f",
         }}
         data-testid={testId}
       >
@@ -720,9 +723,8 @@ export function AddSpecialButton({ onClick, disabled = false, variant = "full", 
       disabled={disabled}
       className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-yellow-300 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
-        background: "linear-gradient(135deg, rgba(234,179,8,0.6), rgba(202,138,4,0.4))",
-        border: "1px solid rgba(250,204,21,0.3)",
-        boxShadow: "0 0 20px rgba(250,204,21,0.12), inset 0 1px 0 rgba(255,255,255,0.1)",
+        background: "transparent",
+        border: "1px dashed #46463f",
       }}
       data-testid={testId}
     >
@@ -749,8 +751,8 @@ export function AddEncoreButton({ onClick, disabled = false, variant = "full", t
         disabled={disabled}
         className="flex items-center gap-1.5 px-3 py-1 rounded-full text-green-400 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
-          background: "linear-gradient(135deg, rgba(34,197,94,0.4), rgba(22,163,74,0.25))",
-          border: "1px solid rgba(74,222,128,0.25)",
+          background: "transparent",
+          border: "1px dashed #46463f",
         }}
         data-testid={testId}
       >
@@ -766,9 +768,8 @@ export function AddEncoreButton({ onClick, disabled = false, variant = "full", t
       disabled={disabled}
       className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-green-400 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
-        background: "linear-gradient(135deg, rgba(34,197,94,0.5), rgba(22,163,74,0.35))",
-        border: "1px solid rgba(74,222,128,0.3)",
-        boxShadow: "0 0 20px rgba(34,197,94,0.12), inset 0 1px 0 rgba(255,255,255,0.1)",
+        background: "transparent",
+        border: "1px dashed #46463f",
       }}
       data-testid={testId}
     >

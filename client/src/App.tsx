@@ -115,11 +115,8 @@ function AppHeader() {
     <div
       className="fixed top-3 right-3 z-50"
       style={{
-        background: "#0a0a08",                      // deep black pill — strong contrast
-        borderRadius: "9999px",
-        padding: "3px",
-        border: "1px solid #46463f",                // warm gray edge
-        boxShadow: "0 4px 16px rgba(0,0,0,0.5)",   // subtle lift
+        background: "transparent", // pills carry their own bg; no wrapping frame
+        padding: "0",
       }}
       data-testid="app-header"
     >

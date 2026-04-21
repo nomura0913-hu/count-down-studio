@@ -595,7 +595,37 @@ export function PerformanceEditor({
   const ctrlBtnClass = "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-200";
 
   return (
-    <div className="flex h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
+    <div className="flex flex-col h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
+      {/* ===== FULL-WIDTH TOP STRIP: EDIT MODE indicator + song count =====
+          Spans entire width (no more left/right separation at the top).
+          pt-[70px] gives room for fixed ModeTabBar pills (SET LIST / SHOW) at top-right. */}
+      <div
+        className="shrink-0 flex items-center justify-between px-4 pt-[70px] pb-3 w-full"
+        style={{ background: "#262624" }}
+      >
+        <div className="flex items-center gap-2">
+          <div
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "#76766f" }}
+          />
+          <span
+            className="text-[11px] font-bold uppercase tracking-[0.15em]"
+            style={{ fontFamily: UI_FONT, color: "#76766f" }}
+          >
+            Edit Mode
+          </span>
+        </div>
+        <span
+          className="text-[11px]"
+          style={{ fontFamily: MONO_FONT, color: "#76766f" }}
+        >
+          {songs.length} songs / {formatDuration(songs.reduce((a, s) => a + s.durationSeconds, 0))} total
+        </span>
+      </div>
+
+      {/* ===== MAIN CONTENT: LEFT preview + RIGHT editor (flex row) ===== */}
+      <div className="flex flex-1 min-h-0 w-full">
+
       {/* LEFT: External display preview area.
           Outer container is WARM GRAY (#262624). ONLY the 16:9 preview rectangle is pure BLACK.
           Explicit flex spacers center the preview; spacers + control bar inherit warm gray. */}
@@ -730,53 +760,18 @@ export function PerformanceEditor({
 
         {/* Bottom spacer — warm gray (mirrors top spacer, centers the preview+controls) */}
         <div className="flex-1 min-h-[16px]" style={{ background: "#262624" }} />
-
-        {/* MIDI log footer — warm gray, not pure black */}
-        <div
-          className="shrink-0"
-          style={{
-            borderTop: "1px solid #3d3d3a",
-            background: "#1f1f1d",
-            height: 32,
-            overflow: "hidden",
-          }}
-        >
-          <MidiLogMonitor lastMessage={lastMidiMessage ?? null} />
-        </div>
       </div>
 
+      {/* RIGHT: setlist editor (EDIT MODE header removed — now lives in full-width top strip) */}
       <div
-        className="flex-1 flex flex-col min-w-0 pt-[4.5rem]"
+        className="flex-1 flex flex-col min-w-0"
         style={{
-          borderLeft: "1px solid rgba(255,255,255,0.06)",
+          borderLeft: "1px solid #3d3d3a",
           background: "#262624",
         }}
         onDrop={handleEditorDrop}
         onDragOver={handleEditorDragOver}
       >
-        <div
-          className="shrink-0 flex items-center justify-between px-3 py-2"
-          style={{ borderBottom: "1px solid #3d3d3a" }}
-        >
-          <div className="flex items-center gap-2">
-            <div
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "#76766f" }}
-            />
-            <span
-              className="text-[11px] font-bold uppercase tracking-[0.15em]"
-              style={{ fontFamily: UI_FONT, color: "#76766f" }}
-            >
-              Edit Mode
-            </span>
-          </div>
-          <span
-            className="text-[11px]"
-            style={{ fontFamily: MONO_FONT, color: "#76766f" }}
-          >
-            {songs.length} songs / {formatDuration(songs.reduce((a, s) => a + s.durationSeconds, 0))} total
-          </span>
-        </div>
 
         <div ref={editorScrollRef} className="flex-1 overflow-y-scroll min-h-0">
           <div className="sticky top-0 z-20" style={{ background: "#262624" }}>
@@ -945,6 +940,22 @@ export function PerformanceEditor({
           />
           <div style={{ minHeight: "50vh" }} />
         </div>
+      </div>
+
+      {/* end of main-content flex row */}
+      </div>
+
+      {/* ===== FULL-WIDTH BOTTOM STRIP: MIDI log (spans entire width) ===== */}
+      <div
+        className="shrink-0 w-full"
+        style={{
+          borderTop: "1px solid #3d3d3a",
+          background: "#1f1f1d",
+          height: 32,
+          overflow: "hidden",
+        }}
+      >
+        <MidiLogMonitor lastMessage={lastMidiMessage ?? null} />
       </div>
     </div>
   );

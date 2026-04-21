@@ -305,27 +305,15 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group ${isCurrent ? "bg-fuchsia-500/10" : ""}`}
       style={{
         ...sortableStyle,
-        // Claude-style: all rows share the same surface color, only left accent stripe differs.
-        // Active state = subtle fuchsia tint, NOT a saturated tint on every row.
-        background: isCurrent
-          ? (isEncore
-              ? "rgba(129,199,132,0.10)"  // subtle green
-              : isMC
-                ? "rgba(90,200,250,0.10)" // subtle cyan
-                : isEvent
-                  ? "rgba(255,213,79,0.10)" // subtle yellow
-                  : "rgba(232,121,249,0.10)") // subtle fuchsia
-          : "#2e2e2b", // ALL rows: same warm gray surface (no saturated tints)
-        borderRadius: "8px",                          // card-like corners
-        marginBottom: "4px",                          // gap between cards
-        border: "1px solid #3d3d3a",                  // visible warm border
-        borderLeft: isEncore
-          ? "3px solid #81c784"                       // green stripe
-          : isMC
-            ? "3px solid #5ac8fa"                     // cyan stripe
-            : isEvent
-              ? "3px solid #ffd54f"                   // yellow stripe
-              : (isCurrent ? "3px solid #e879f9" : "3px solid transparent"),
+        // PROMPTER-style: card floats above canvas with surface color + clear border.
+        // Active: subtle accent tint + accent border (NOT left stripe—left stripe is too subtle).
+        background: isCurrent ? "rgba(232,121,249,0.12)" : "#323230", // surface (brighter than #262624 canvas)
+        borderRadius: "10px",
+        marginBottom: "6px",
+        border: isCurrent ? "1px solid #e879f9" : "1px solid #46463f",
+        boxShadow: isCurrent
+          ? "0 0 0 1px rgba(232,121,249,0.15), 0 4px 12px rgba(0,0,0,0.25)"
+          : "0 1px 3px rgba(0,0,0,0.25)",
       }}
       data-testid={`${pid}-song-${song.id}`}
       data-song-row=""
@@ -341,28 +329,53 @@ export function SongRow({
         <GripVertical className="w-3.5 h-3.5" />
       </div>
 
-      <span
-        className="text-center text-xs font-semibold shrink-0"
-        style={{ fontFamily: MONO_FONT, color: isEncore ? "#22c55e" : isMC ? "#38bdf8" : isEvent ? "#facc15" : isCurrent ? "#e879f9" : "rgba(255,255,255,0.5)", width: 22, minWidth: 22, maxWidth: 22 }}
-        data-testid={`text-song-index-${song.id}`}
-      >
-        {isEncore ? "EN" : isMC ? "MC" : isEvent ? "SP" : (songNumber ?? index + 1)}
-      </span>
+      {/* PROMPTER-style BADGE (solid color pill) for MC/SP/EN, muted number for songs */}
+      {(isEncore || isMC || isEvent) ? (
+        <span
+          className="text-center shrink-0 flex items-center justify-center"
+          style={{
+            fontFamily: MONO_FONT,
+            fontSize: "10px",
+            fontWeight: 900,
+            letterSpacing: "0.10em",
+            color: "#0a0a08",                     // dark text on colored bg
+            background: isEncore ? "#81c784" : isMC ? "#5ac8fa" : "#ffd54f",
+            borderRadius: "5px",
+            padding: "3px 7px",
+            minWidth: 28,
+          }}
+          data-testid={`text-song-index-${song.id}`}
+        >
+          {isEncore ? "EN" : isMC ? "MC" : "SP"}
+        </span>
+      ) : (
+        <span
+          className="text-center shrink-0"
+          style={{
+            fontFamily: MONO_FONT,
+            fontSize: "12px",
+            fontWeight: 700,
+            color: isCurrent ? "#e879f9" : "#76766f",
+            width: 22, minWidth: 22, maxWidth: 22,
+          }}
+          data-testid={`text-song-index-${song.id}`}
+        >
+          {songNumber ?? index + 1}
+        </span>
+      )}
 
       {showPlayButton && (
         <button
-          className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200"
+          className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-150"
           style={{
-            color: isCurrent ? "#fff" : "rgba(255,255,255,0.4)",
-            background: isCurrent
-              ? "linear-gradient(135deg, rgba(192,38,211,0.6), rgba(168,85,247,0.4))"
-              : "rgba(255,255,255,0.05)",
-            border: isCurrent ? "1px solid rgba(232,121,249,0.3)" : "1px solid rgba(255,255,255,0.06)",
+            color: isCurrent ? "#0a0a08" : "#a8a8a0",
+            background: isCurrent ? "#e879f9" : "#46463f",
+            border: "none",
           }}
           onClick={() => onStartSong?.(index)}
           data-testid={`${pid}-button-play-${song.id}`}
         >
-          <Play className="w-3 h-3" />
+          <Play className="w-3 h-3" fill="currentColor" />
         </button>
       )}
 

@@ -111,13 +111,11 @@ function AppHeader() {
     openOutputWindow();
   };
 
+  // ModeTabBar sits inside the fixed topbar strip (56px) on the right side.
   return (
     <div
-      className="fixed top-3 right-3 z-50"
-      style={{
-        background: "transparent", // pills carry their own bg; no wrapping frame
-        padding: "0",
-      }}
+      className="fixed top-0 right-4 z-50 flex items-center h-[56px]"
+      style={{ background: "transparent" }}
       data-testid="app-header"
     >
       <ModeTabBar

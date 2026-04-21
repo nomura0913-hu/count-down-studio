@@ -992,33 +992,50 @@ export default function Manage() {
       onDragLeave={handleFileDragLeave}
       data-testid="manage-page"
     >
-      {/* Logo - fixed top left */}
-      <button
-        className="fixed top-3 left-4 z-50 flex items-center gap-3 transition-all duration-200 hover:opacity-80"
-        style={{ background: "none", border: "none", cursor: "pointer" }}
-        onClick={() => navigate("/")}
-        title="ホーム"
-        data-testid="button-home"
+      {/* Full-width TOPBAR strip (PROMPTER-style): deep black strip with logo block + wordmark */}
+      <div
+        className="fixed top-0 left-0 right-0 z-40 flex items-center"
+        style={{
+          height: 56,
+          background: "#0f0f0d",                      // deeper than canvas for strong anchor
+          borderBottom: "1px solid #46463f",
+        }}
       >
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 7,
-            background: "linear-gradient(160deg, #b06ae6 0%, #8b3fd4 50%, #7232b8 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
+        <button
+          className="flex items-center gap-3 pl-4 transition-opacity duration-150 hover:opacity-80"
+          style={{ background: "transparent", border: "none", cursor: "pointer" }}
+          onClick={() => navigate("/")}
+          title="ホーム"
+          data-testid="button-home"
         >
-          <span style={{ fontSize: 14, fontFamily: "'Inter', sans-serif", fontWeight: 700, color: "#1a1a1a", lineHeight: 1 }}>CD</span>
-        </div>
-        <div style={{ lineHeight: 1 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: "rgba(168,85,247,0.95)", fontFamily: "'Inter', sans-serif", letterSpacing: "0.04em" }}>COUNT DOWN STUDIO</div>
-          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "'Inter', sans-serif", letterSpacing: "0.15em", marginTop: 2 }}>CONCERT COUNTDOWN TIMER</div>
-        </div>
-      </button>
+          {/* Solid fuchsia logo square (PROMPTER style) */}
+          <div
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 6,
+              background: "#e879f9",                  // solid fuchsia (not gradient)
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              boxShadow: "0 0 14px rgba(232,121,249,0.25)",
+            }}
+          >
+            <span style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", fontWeight: 900, color: "#0a0a08", lineHeight: 1, letterSpacing: "-0.03em" }}>CD</span>
+          </div>
+          {/* Wordmark: **COUNT DOWN** STUDIO */}
+          <div style={{ lineHeight: 1, textAlign: "left" }}>
+            <div style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", letterSpacing: "0.03em", color: "#e8e8e2" }}>
+              <b style={{ fontWeight: 800, color: "#e879f9" }}>COUNT DOWN</b>
+              <span style={{ fontWeight: 300, marginLeft: 6 }}>STUDIO</span>
+            </div>
+            <div style={{ fontSize: 9, color: "#76766f", letterSpacing: "0.22em", marginTop: 3, fontWeight: 700, textTransform: "uppercase" }}>
+              Concert Countdown Timer
+            </div>
+          </div>
+        </button>
+      </div>
       {isDragOver && (
         <div
           className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"

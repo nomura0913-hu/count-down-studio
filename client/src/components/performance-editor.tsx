@@ -595,17 +595,30 @@ export function PerformanceEditor({
   const ctrlBtnClass = "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-200";
 
   return (
-    <div className="flex h-full" style={{ background: "#262624" }} data-testid="performance-editor">
-      {/* LEFT: External display preview container (warm gray).
-          Only the 16:9 preview rectangle itself is pure black to mirror the projector output. */}
+    <div className="flex h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
+      {/* LEFT: External display preview area.
+          Outer container is WARM GRAY (#262624). ONLY the 16:9 preview rectangle is pure BLACK.
+          Explicit flex spacers center the preview; spacers + control bar inherit warm gray. */}
       <div
-        className="flex flex-col shrink-0 w-1/2"
+        className="flex flex-col shrink-0 w-1/2 h-full"
         style={{ background: "#262624" }}
       >
-        <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+        {/* Top spacer — warm gray */}
+        <div className="flex-1 min-h-[16px]" style={{ background: "#262624" }} />
+
+        {/* 16:9 preview rectangle — ONLY this is pure black, capped so it never overflows */}
+        <div className="px-6 w-full shrink-0" style={{ background: "#262624" }}>
           <div
-            className="shrink-0 relative w-full"
-            style={{ aspectRatio: "16 / 9", background: "#000" }}
+            className="relative mx-auto"
+            style={{
+              aspectRatio: "16 / 9",
+              background: "#000",
+              width: "100%",
+              maxHeight: "calc(100vh - 220px)",
+              overflow: "hidden",
+              borderRadius: "6px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px #46463f",
+            }}
           >
             {showingEventInfo ? (
               <EventInfoDisplay
@@ -638,13 +651,16 @@ export function PerformanceEditor({
               />
             )}
           </div>
+        </div>
 
-          <div
-            className="flex flex-wrap items-center justify-center gap-2 py-2.5 px-3 w-full shrink-0"
-            style={{
-              borderTop: "1px solid rgba(74,222,128,0.1)",
-            }}
-            data-testid="editor-control-bar"
+        {/* Control bar — warm gray with subtle top border */}
+        <div
+          className="flex flex-wrap items-center justify-center gap-2 py-3 px-4 w-full shrink-0"
+          style={{
+            background: "#262624",
+            marginTop: "14px",
+          }}
+          data-testid="editor-control-bar"
         >
           {countdownStatus === "running" && (
             <button onClick={onPause} className={ctrlBtnClass}
@@ -711,13 +727,16 @@ export function PerformanceEditor({
             data-testid="editor-file-input"
           />
         </div>
-        </div>
 
+        {/* Bottom spacer — warm gray (mirrors top spacer, centers the preview+controls) */}
+        <div className="flex-1 min-h-[16px]" style={{ background: "#262624" }} />
+
+        {/* MIDI log footer — warm gray, not pure black */}
         <div
           className="shrink-0"
           style={{
-            borderTop: "1px solid rgba(6,182,212,0.1)",
-            background: "rgba(0,0,0,0.3)",
+            borderTop: "1px solid #3d3d3a",
+            background: "#1f1f1d",
             height: 32,
             overflow: "hidden",
           }}

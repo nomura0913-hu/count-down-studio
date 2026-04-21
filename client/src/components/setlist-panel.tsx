@@ -881,7 +881,7 @@ export function SetlistPanel({
         className="px-3 py-3 relative"
         style={{
           borderBottom: "1px solid #46463f",
-          background: "#1a1a18",
+          background: "#2e2e2b",
         }}
       >
         <div className="flex items-center gap-2 mb-1">

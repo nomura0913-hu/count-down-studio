@@ -100,7 +100,7 @@ export const TABLE_HEADER_STYLE = {
   color: "#a8a8a0",                  // --cds-text-2
   borderBottom: "1px solid #46463f", // --cds-border
   fontFamily: HEADER_FONT,
-  background: "#1a1a18",             // deep dark header strip for contrast
+  background: "#2e2e2b",             // deep dark header strip for contrast
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
 };

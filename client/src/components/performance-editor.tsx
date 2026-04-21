@@ -597,11 +597,11 @@ export function PerformanceEditor({
   return (
     <div className="flex flex-col h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
       {/* ===== FULL-WIDTH TOP STRIP: EDIT MODE indicator + song count =====
-          Spans entire width (no more left/right separation at the top).
-          pt-[70px] gives room for fixed ModeTabBar pills (SET LIST / SHOW) at top-right. */}
+          pt-[70px] gives room for fixed ModeTabBar pills at top-right.
+          bg #2e2e2b (panel layer) floats above #262624 canvas for depth. */}
       <div
         className="shrink-0 flex items-center justify-between px-4 pt-[70px] pb-3 w-full"
-        style={{ background: "#262624" }}
+        style={{ background: "#2e2e2b" }}
       >
         <div className="flex items-center gap-2">
           <div
@@ -627,7 +627,7 @@ export function PerformanceEditor({
           Spans entire width so the concert schedule lives at the top, unified across L/R. */}
       <div
         className="shrink-0 w-full px-4 pt-2 pb-3"
-        style={{ background: "#1a1a18", borderBottom: "1px solid #46463f" }}
+        style={{ background: "#2e2e2b", borderBottom: "1px solid #46463f" }}
       >
         <div className="flex items-center gap-3 mb-1.5">
           <div className="w-9 shrink-0" />
@@ -942,7 +942,7 @@ export function PerformanceEditor({
         className="shrink-0 w-full"
         style={{
           borderTop: "1px solid #3d3d3a",
-          background: "#1f1f1d",
+          background: "#2e2e2b",
           height: 32,
           overflow: "hidden",
         }}

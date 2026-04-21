@@ -997,7 +997,7 @@ export default function Manage() {
         className="fixed top-0 left-0 right-0 z-40 flex items-center"
         style={{
           height: 56,
-          background: "#0f0f0d",                      // deeper than canvas for strong anchor
+          background: "#2e2e2b",                      // deeper than canvas for strong anchor
           borderBottom: "1px solid #46463f",
         }}
       >
@@ -1060,7 +1060,7 @@ export default function Manage() {
           className="px-3 py-2"
           style={{
             borderBottom: "1px solid #46463f",
-            background: "#1a1a18",
+            background: "#2e2e2b",
           }}
         >
           <div className="flex items-center gap-1.5 flex-wrap max-w-7xl mx-auto">

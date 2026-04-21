@@ -22,12 +22,12 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
       style={{ background: "transparent" }}
       data-testid="mode-tab-bar"
     >
-      {/* SET LIST pill */}
+      {/* SET LIST pill — surface layer (#323230) so it pops against #2e2e2b panel strip */}
       <button
         className="flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase transition-colors duration-150"
         style={{
           fontFamily: UI_FONT,
-          background: !outputOpen ? "#e879f9" : "#2e2e2b",
+          background: !outputOpen ? "#e879f9" : "#323230",
           color:      !outputOpen ? "#0a0a08" : "#a8a8a0",
           border:     !outputOpen ? "1px solid #e879f9" : "1px solid #46463f",
         }}
@@ -37,11 +37,11 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
         SET LIST
       </button>
 
-      {/* SHOW segment */}
+      {/* SHOW segment — surface layer */}
       <div
         className="flex items-center rounded-full"
         style={{
-          background: "#2e2e2b",
+          background: "#323230",
           border: "1px solid #46463f",
         }}
       >

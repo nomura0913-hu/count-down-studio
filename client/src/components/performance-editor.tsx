@@ -691,13 +691,13 @@ export function PerformanceEditor({
             </button>
           )}
           <button onClick={handleExport} className={ctrlBtnClass}
-            style={{ color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}
+            style={{ color: "rgba(255,255,255,0.5)", background: "#2e2e2b", border: "1px solid #46463f" }}
             data-testid="editor-button-save"
           >
             <Download className="w-3.5 h-3.5" /> Save
           </button>
           <button onClick={() => fileInputRef.current?.click()} className={ctrlBtnClass}
-            style={{ color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}
+            style={{ color: "rgba(255,255,255,0.5)", background: "#2e2e2b", border: "1px solid #46463f" }}
             data-testid="editor-button-import"
           >
             <Upload className="w-3.5 h-3.5" /> Import
@@ -764,8 +764,8 @@ export function PerformanceEditor({
             <div
               className="px-2 py-3 relative"
               style={{
-                borderBottom: "1px solid rgba(232,121,249,0.15)",
-                background: "linear-gradient(180deg, rgba(232,121,249,0.06) 0%, transparent 100%)",
+                borderBottom: "1px solid #46463f",
+                background: "#1a1a18",
               }}
             >
               <div className="flex items-center gap-1 mb-1">
@@ -806,8 +806,8 @@ export function PerformanceEditor({
                   type="text"
                   className="flex-1 min-w-0 h-9 text-sm rounded-lg text-white px-3 font-semibold placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/50 transition-all duration-200"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "#323230",
+                    border: "1px solid #46463f",
                   }}
                   value={setlistNameValue}
                   onChange={(e) => { if (setlist) setSetlistNameValue(e.target.value); }}
@@ -826,7 +826,7 @@ export function PerformanceEditor({
                   type="text"
                   inputMode="numeric"
                   className="h-9 text-sm rounded-lg text-white px-2 text-center font-semibold placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-green-500/40 transition-all duration-200"
-                  style={{ width: "72px", minWidth: "72px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  style={{ width: "72px", minWidth: "72px", background: "#323230", border: "1px solid #46463f" }}
                   value={rehearsalValue}
                   onChange={(e) => { setRehearsalValue(imeRehearsalRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
                   onCompositionStart={() => { imeRehearsalRef.current = true; clearTimeout(imeRehearsalTimerRef.current); }}
@@ -841,7 +841,7 @@ export function PerformanceEditor({
                   type="text"
                   inputMode="numeric"
                   className="h-9 text-sm rounded-lg text-white px-2 text-center font-semibold placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-amber-500/40 transition-all duration-200"
-                  style={{ width: "72px", minWidth: "72px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  style={{ width: "72px", minWidth: "72px", background: "#323230", border: "1px solid #46463f" }}
                   value={doorOpenValue}
                   onChange={(e) => { setDoorOpenValue(imeDoorRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
                   onCompositionStart={() => { imeDoorRef.current = true; clearTimeout(imeDoorTimerRef.current); }}
@@ -856,7 +856,7 @@ export function PerformanceEditor({
                   type="text"
                   inputMode="numeric"
                   className="h-9 text-sm rounded-lg text-white px-2 text-center font-semibold placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-500/40 transition-all duration-200"
-                  style={{ width: "72px", minWidth: "72px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  style={{ width: "72px", minWidth: "72px", background: "#323230", border: "1px solid #46463f" }}
                   value={showTimeValue}
                   onChange={(e) => { setShowTimeValue(imeShowRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
                   onCompositionStart={() => { imeShowRef.current = true; clearTimeout(imeShowTimerRef.current); }}

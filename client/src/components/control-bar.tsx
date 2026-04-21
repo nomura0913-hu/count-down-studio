@@ -28,9 +28,9 @@ export function ControlBar({
       <div
         className="flex items-center gap-1 rounded-full px-2 py-1"
         style={{
-          background: "rgba(255,255,255,0.06)",
+          background: "#323230",
           backdropFilter: "blur(12px)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: "1px solid #3d3d3a",
         }}
       >
         {status === "running" && (

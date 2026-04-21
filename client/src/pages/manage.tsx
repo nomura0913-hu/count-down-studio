@@ -985,7 +985,7 @@ export default function Manage() {
       className="h-full flex flex-col relative pt-[4.5rem]"
       style={{
         fontFamily: UI_FONT,
-        background: "#262624",
+        background: "#262624", // warm gray canvas; header strip (deep black) creates contrast
       }}
       onDrop={handleFileDrop}
       onDragOver={handleFileDragOver}
@@ -1042,8 +1042,8 @@ export default function Manage() {
         <header
           className="px-3 py-2"
           style={{
-            borderBottom: "1px solid rgba(232,121,249,0.15)",
-            background: "linear-gradient(180deg, rgba(232,121,249,0.06) 0%, transparent 100%)",
+            borderBottom: "1px solid #46463f",
+            background: "#1a1a18",
           }}
         >
           <div className="flex items-center gap-1.5 flex-wrap max-w-7xl mx-auto">
@@ -1061,8 +1061,8 @@ export default function Manage() {
                 fontFamily: HEADER_FONT,
                 fontSize: "15px",
                 letterSpacing: "0.12em",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: "#2e2e2b",
+                border: "1px solid #46463f",
                 backdropFilter: "blur(8px)",
                 width: "96px",
                 height: "32px",
@@ -1079,8 +1079,8 @@ export default function Manage() {
                 fontFamily: HEADER_FONT,
                 fontSize: "15px",
                 letterSpacing: "0.12em",
-                background: "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: "#2e2e2b",
+                border: "1px solid #46463f",
                 backdropFilter: "blur(8px)",
                 width: "96px",
                 height: "32px",
@@ -1142,7 +1142,7 @@ export default function Manage() {
             <div className="flex items-center gap-2 mb-3">
               <button
                 className="w-8 h-8 rounded-full flex items-center justify-center text-white/30 transition-all duration-200 disabled:opacity-20"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+                style={{ background: "#2e2e2b", border: "1px solid #3d3d3a" }}
                 disabled={currentSetlistIndex <= 0}
                 onClick={goToPrevSetlist}
                 data-testid="button-prev-setlist"
@@ -1154,7 +1154,7 @@ export default function Manage() {
               </span>
               <button
                 className="w-8 h-8 rounded-full flex items-center justify-center text-white/30 transition-all duration-200 disabled:opacity-20"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+                style={{ background: "#2e2e2b", border: "1px solid #3d3d3a" }}
                 disabled={currentSetlistIndex >= setlists.length - 1}
                 onClick={goToNextSetlist}
                 data-testid="button-next-setlist"

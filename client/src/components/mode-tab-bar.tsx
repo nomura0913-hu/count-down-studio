@@ -100,7 +100,7 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
                     textShadow: "0 1px 0 rgba(255,255,255,0.15)",
                   }
                 : {
-                    background: "rgba(255,255,255,0.04)",
+                    background: "#2e2e2b",
                     color: "rgba(255,255,255,0.2)",
                   }),
             }}
@@ -116,11 +116,11 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
               fontFamily: "'JetBrains Mono', monospace",
               ...(!outputOpen
                 ? {
-                    background: "rgba(255,255,255,0.06)",
+                    background: "#323230",
                     color: "rgba(255,255,255,0.35)",
                   }
                 : {
-                    background: "rgba(255,255,255,0.03)",
+                    background: "#2e2e2b",
                     color: "rgba(255,255,255,0.15)",
                   }),
             }}

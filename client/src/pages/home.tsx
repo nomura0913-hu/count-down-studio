@@ -126,7 +126,7 @@ export default function Home() {
   return (
     <div
       className="h-screen w-full overflow-auto flex flex-col items-center justify-center"
-      style={{ background: "#111114", fontFamily: FONT }}
+      style={{ background: "#0a0a08", fontFamily: FONT }}
       data-testid="home-page"
     >
       <div className="w-full max-w-md px-6">
@@ -163,8 +163,8 @@ export default function Home() {
         <div
           className="rounded-xl"
           style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: "#2e2e2b",
+            border: "1px solid #3d3d3a",
             padding: "24px",
           }}
         >
@@ -208,8 +208,8 @@ export default function Home() {
                     <button
                       className="w-full text-left flex items-center gap-3 rounded-lg"
                       style={{
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.08)",
+                        background: "#2e2e2b",
+                        border: "1px solid #3d3d3a",
                         padding: "12px 14px",
                       }}
                       onClick={() => handleOpen(setlist.id)}

@@ -305,19 +305,22 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group ${isCurrent ? "bg-fuchsia-500/10" : ""}`}
       style={{
         ...sortableStyle,
-        borderBottom: isLast ? "none" : "1px solid rgba(255,255,255,0.04)",
-        ...(isEncore ? {
-          background: isCurrent ? "rgba(34,197,94,0.12)" : "rgba(34,197,94,0.04)",
-          borderLeft: "3px solid rgba(34,197,94,0.5)",
-        } : isMC ? {
-          background: isCurrent ? "rgba(56,189,248,0.12)" : "rgba(56,189,248,0.04)",
-          borderLeft: "3px solid rgba(56,189,248,0.5)",
-        } : isEvent ? {
-          background: isCurrent ? "rgba(234,179,8,0.12)" : "rgba(234,179,8,0.04)",
-          borderLeft: "3px solid rgba(250,204,21,0.5)",
-        } : {
-          borderLeft: "3px solid transparent",
-        }),
+        // Each row is a distinct card on the warm-gray canvas
+        background: isEncore
+          ? (isCurrent ? "rgba(34,197,94,0.18)" : "#2a2d28")          // green tinted surface
+          : isMC
+            ? (isCurrent ? "rgba(56,189,248,0.18)" : "#262a2d")       // sky tinted surface
+            : isEvent
+              ? (isCurrent ? "rgba(234,179,8,0.18)" : "#2d2b23")     // yellow tinted surface
+              : (isCurrent ? "rgba(232,121,249,0.14)" : "#2e2e2b"),  // default surface
+        borderBottom: isLast ? "1px solid #46463f" : "1px solid #383835",
+        borderLeft: isEncore
+          ? "3px solid rgba(34,197,94,0.7)"
+          : isMC
+            ? "3px solid rgba(56,189,248,0.7)"
+            : isEvent
+              ? "3px solid rgba(250,204,21,0.7)"
+              : (isCurrent ? "3px solid #e879f9" : "3px solid transparent"),
       }}
       data-testid={`${pid}-song-${song.id}`}
       data-song-row=""
@@ -474,7 +477,7 @@ export function SongRow({
                 : {
                     background: "rgba(255,255,255,0.02)",
                     color: "rgba(255,255,255,0.15)",
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    border: "1px solid #3d3d3a",
                   }),
             }}
             onClick={() => {

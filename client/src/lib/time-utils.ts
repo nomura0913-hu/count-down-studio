@@ -70,10 +70,10 @@ export const MIDI_NOTES_BY_NAME: { noteName: string; notes: { value: number; lab
     return { noteName, notes };
   }).filter((g) => g.notes.length > 0);
 
-// Warm gray surface (Claude-style) - matches index.css --cds-surface
+// Solid warm gray inputs (Claude-style). No transparency — strong edges.
 export const INPUT_STYLES = {
-  border: "1px solid rgba(70,70,63,0.65)",        // var(--cds-border) #46463f
-  background: "rgba(50,50,48,0.55)",              // var(--cds-surface) #323230
+  border: "1px solid #46463f",         // --cds-border
+  background: "#323230",                // --cds-surface
   glowFocused: (accent: string) => {
     const match = accent.match(/rgba\(([^)]+)\)/);
     if (match) {
@@ -85,7 +85,7 @@ export const INPUT_STYLES = {
     }
     return `0 0 10px ${accent}`;
   },
-  borderBlur: "rgba(70,70,63,0.45)",
+  borderBlur: "#46463f",
 } as const;
 
 export const ACCENT_COLORS = {
@@ -97,10 +97,10 @@ export const ACCENT_COLORS = {
 
 export const HEADER_FONT = "'Bebas Neue', Impact, 'Arial Narrow', sans-serif";
 export const TABLE_HEADER_STYLE = {
-  color: "rgba(168,168,160,0.85)",              // var(--cds-text-2) #a8a8a0
-  borderBottom: "1px solid rgba(70,70,63,0.55)",// var(--cds-border) #46463f
+  color: "#a8a8a0",                  // --cds-text-2
+  borderBottom: "1px solid #46463f", // --cds-border
   fontFamily: HEADER_FONT,
-  background: "rgba(50,50,48,0.45)",            // var(--cds-surface) #323230
+  background: "#1a1a18",             // deep dark header strip for contrast
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
 };

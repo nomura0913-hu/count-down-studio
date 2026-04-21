@@ -107,10 +107,6 @@ function AppHeader() {
 
   const currentMode = outputOpen ? "show" as const : "setlist" as const;
 
-  const bgColor = outputOpen
-    ? "rgba(38,38,36,0.85)"
-    : "rgba(50,50,48,0.85)";
-
   const handleOutputOn = () => {
     openOutputWindow();
   };
@@ -119,10 +115,11 @@ function AppHeader() {
     <div
       className="fixed top-3 right-3 z-50"
       style={{
-        background: bgColor,
+        background: "#0a0a08",                      // deep black pill — strong contrast
         borderRadius: "9999px",
-        padding: "2px",
-        backdropFilter: "blur(12px)",
+        padding: "3px",
+        border: "1px solid #46463f",                // warm gray edge
+        boxShadow: "0 4px 16px rgba(0,0,0,0.5)",   // subtle lift
       }}
       data-testid="app-header"
     >

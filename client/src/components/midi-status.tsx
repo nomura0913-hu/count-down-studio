@@ -76,7 +76,7 @@ export function MidiStatus({
         className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-200"
         style={{
           fontFamily: UI_FONT,
-          background: "rgba(255,255,255,0.06)",
+          background: "#323230",
           border: `1px solid ${statusColor.replace("0.8", "0.3")}`,
           color: statusColor,
           backdropFilter: "blur(8px)",
@@ -99,7 +99,7 @@ export function MidiStatus({
           className="absolute top-full left-0 mt-1 min-w-[280px] rounded-lg py-2 z-[100]"
           style={{
             background: "rgba(18,18,26,0.95)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid #46463f",
             backdropFilter: "blur(16px)",
             boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
           }}
@@ -186,8 +186,8 @@ export function MidiStatus({
               }}
               className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded text-[11px] text-white/60 hover:text-white/90 transition-colors duration-200"
               style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "#323230",
+                border: "1px solid #3d3d3a",
               }}
               data-testid="button-midi-reconnect"
             >

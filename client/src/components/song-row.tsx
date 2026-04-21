@@ -581,19 +581,20 @@ export function SongTableHeader({ showPlayButton = false, showMidiColumn = false
       style={{ ...TABLE_HEADER_STYLE, borderLeft: "3px solid transparent" }}
       data-testid="song-table-header"
     >
+      {/* All column labels: unified muted warm gray (PROMPTER style) */}
       <span className="w-4" />
-      <span className="text-center" style={{ width: 22, minWidth: 22, maxWidth: 22 }}>#</span>
+      <span className="text-center" style={{ width: 22, minWidth: 22, maxWidth: 22, color: "#76766f" }}>#</span>
       {showPlayButton && <span className="w-7" />}
-      <span className="flex-[0.8]" style={{ color: "rgba(232,121,249,0.7)" }}>NOW TITLE</span>
-      <span className="flex-[0.8]" style={{ color: "rgba(6,182,212,0.7)" }}>NEXT TITLE</span>
-      <span className="w-[60px] text-center" style={{ color: "rgba(255,255,255,0.6)" }}>START</span>
-      <span className="w-[60px] text-center" style={{ color: "rgba(255,255,255,0.6)" }}>END</span>
-      <span className="w-[60px] text-center" style={{ color: "rgba(250,204,21,0.8)" }}>TIME</span>
-      <span className="w-[42px] text-center" style={{ color: "rgba(34,197,94,0.45)", fontSize: "13px" }}>X TIME</span>
-      {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>着替IN</span>}
-      {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>着替OUT</span>}
-      <span className="w-[60px] text-center" style={{ color: "rgba(251,146,60,0.8)", fontSize: "12px", letterSpacing: "-0.05em" }}>着替時間</span>
-      {showMidiColumn && <span className="w-[56px] text-center" style={{ color: "rgba(255,255,255,0.6)" }}>MIDI</span>}
+      <span className="flex-[0.8]" style={{ color: "#76766f" }}>NOW TITLE</span>
+      <span className="flex-[0.8]" style={{ color: "#76766f" }}>NEXT TITLE</span>
+      <span className="w-[60px] text-center" style={{ color: "#76766f" }}>START</span>
+      <span className="w-[60px] text-center" style={{ color: "#76766f" }}>END</span>
+      <span className="w-[60px] text-center" style={{ color: "#76766f" }}>TIME</span>
+      <span className="w-[42px] text-center" style={{ color: "#76766f", fontSize: "13px" }}>X TIME</span>
+      {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替IN</span>}
+      {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替OUT</span>}
+      <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px", letterSpacing: "-0.05em" }}>着替時間</span>
+      {showMidiColumn && <span className="w-[56px] text-center" style={{ color: "#76766f" }}>MIDI</span>}
       <span className="w-5" />
     </div>
   );
@@ -614,10 +615,11 @@ export function AddSongButton({ onClick, disabled = false, variant = "full", tes
       <button
         onClick={onClick}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
           background: "transparent",
           border: "1px dashed #46463f",
+          color: "#a8a8a0",
         }}
         data-testid={testId}
       >
@@ -631,10 +633,11 @@ export function AddSongButton({ onClick, disabled = false, variant = "full", tes
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-white font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
         background: "transparent",
         border: "1px dashed #46463f",
+        color: "#a8a8a0",
       }}
       data-testid={testId}
     >
@@ -659,10 +662,11 @@ export function AddMCButton({ onClick, disabled = false, variant = "full", testI
       <button
         onClick={onClick}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-sky-300 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
           background: "transparent",
           border: "1px dashed #46463f",
+          color: "#a8a8a0",
         }}
         data-testid={testId}
       >
@@ -676,10 +680,11 @@ export function AddMCButton({ onClick, disabled = false, variant = "full", testI
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sky-300 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
         background: "transparent",
         border: "1px dashed #46463f",
+        color: "#a8a8a0",
       }}
       data-testid={testId}
     >
@@ -704,10 +709,11 @@ export function AddSpecialButton({ onClick, disabled = false, variant = "full", 
       <button
         onClick={onClick}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-yellow-300 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
           background: "transparent",
           border: "1px dashed #46463f",
+          color: "#a8a8a0",
         }}
         data-testid={testId}
       >
@@ -721,10 +727,11 @@ export function AddSpecialButton({ onClick, disabled = false, variant = "full", 
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-yellow-300 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
         background: "transparent",
         border: "1px dashed #46463f",
+        color: "#a8a8a0",
       }}
       data-testid={testId}
     >
@@ -749,10 +756,11 @@ export function AddEncoreButton({ onClick, disabled = false, variant = "full", t
       <button
         onClick={onClick}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-green-400 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
         style={{
           background: "transparent",
           border: "1px dashed #46463f",
+          color: "#a8a8a0",
         }}
         data-testid={testId}
       >
@@ -766,10 +774,11 @@ export function AddEncoreButton({ onClick, disabled = false, variant = "full", t
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-green-400 font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
+      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-sm tracking-wider uppercase transition-all duration-300 disabled:opacity-40"
       style={{
         background: "transparent",
         border: "1px dashed #46463f",
+        color: "#a8a8a0",
       }}
       data-testid={testId}
     >

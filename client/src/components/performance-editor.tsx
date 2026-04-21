@@ -737,23 +737,23 @@ export function PerformanceEditor({
       >
         <div
           className="shrink-0 flex items-center justify-between px-3 py-2"
-          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ borderBottom: "1px solid #3d3d3a" }}
         >
           <div className="flex items-center gap-2">
             <div
-              className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"
-              style={{ boxShadow: "0 0 6px rgba(74,222,128,0.6)" }}
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: "#76766f" }}
             />
             <span
-              className="text-[10px] font-bold uppercase tracking-[0.2em] text-green-400/80"
-              style={{ fontFamily: UI_FONT }}
+              className="text-[11px] font-bold uppercase tracking-[0.15em]"
+              style={{ fontFamily: UI_FONT, color: "#76766f" }}
             >
               Edit Mode
             </span>
           </div>
           <span
-            className="text-[10px]"
-            style={{ fontFamily: MONO_FONT, color: "rgba(255,255,255,0.2)" }}
+            className="text-[11px]"
+            style={{ fontFamily: MONO_FONT, color: "#76766f" }}
           >
             {songs.length} songs / {formatDuration(songs.reduce((a, s) => a + s.durationSeconds, 0))} total
           </span>

@@ -1163,17 +1163,17 @@ export default function Manage() {
               </button>
             </div>
 
-            {/* Label row */}
+            {/* Label row - unified muted warm gray (PROMPTER style) */}
             <div className="flex items-baseline gap-3 mb-3">
               <span
-                className="flex-1 min-w-0 text-[15px] uppercase leading-none"
-                style={{ fontFamily: HEADER_FONT, letterSpacing: "0.12em", color: "rgba(232,121,249,0.7)", textShadow: "0 0 8px rgba(232,121,249,0.2)" }}
+                className="flex-1 min-w-0 text-[11px] uppercase leading-none font-bold"
+                style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f" }}
               >
                 Concert Title
               </span>
-              <span className="text-[15px] uppercase leading-none text-center whitespace-nowrap" style={{ fontFamily: HEADER_FONT, letterSpacing: "0.12em", color: "rgba(74,222,128,0.6)", width: "90px", minWidth: "90px" }}>REHEARSAL</span>
-              <span className="text-[15px] uppercase leading-none text-center whitespace-nowrap" style={{ fontFamily: HEADER_FONT, letterSpacing: "0.12em", color: "rgba(250,204,21,0.6)", width: "90px", minWidth: "90px" }}>DOOR OPEN</span>
-              <span className="text-[15px] uppercase leading-none text-center whitespace-nowrap" style={{ fontFamily: HEADER_FONT, letterSpacing: "0.12em", color: "rgba(6,182,212,0.6)", width: "90px", minWidth: "90px" }}>SHOW TIME</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>REHEARSAL</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>DOOR OPEN</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>SHOW TIME</span>
             </div>
 
             {/* Input row - all same height */}

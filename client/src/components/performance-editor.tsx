@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { type LocalSong as Song, type LocalSetlist as Setlist, localDB } from "@/lib/local-db";
 import {
   useCreateSong,
@@ -114,6 +115,7 @@ export function PerformanceEditor({
   const updateSong = useUpdateSong();
   const { toast } = useToast();
   const { broadcast, outputOpen } = useAppMode();
+  const [, navigate] = useLocation();
   const [showingEventInfo, setShowingEventInfo] = useState(false);
   const eventInfoIntervalRef = useRef<ReturnType<typeof setInterval>>();
   const showingEventInfoRef = useRef(false);
@@ -596,24 +598,45 @@ export function PerformanceEditor({
 
   return (
     <div className="flex flex-col h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
-      {/* ===== FULL-WIDTH TOP STRIP: EDIT MODE indicator only (song count removed) =====
-          Slim strip — just enough room for the ModeTabBar pills (fixed at top-right). */}
+      {/* ===== FULL-WIDTH TOP STRIP: COUNT DOWN STUDIO logo + wordmark (click → home) ===== */}
       <div
         className="shrink-0 flex items-center px-4 w-full"
         style={{ background: "#2e2e2b", height: 56 }}
       >
-        <div className="flex items-center gap-2">
+        <button
+          className="flex items-center gap-3 transition-opacity duration-150 hover:opacity-80"
+          style={{ background: "transparent", border: "none", cursor: "pointer" }}
+          onClick={() => navigate("/")}
+          title="ホームに戻る"
+          data-testid="button-home-show"
+        >
+          {/* Solid fuchsia logo square (PROMPTER-style) */}
           <div
-            className="w-1.5 h-1.5 rounded-full"
-            style={{ background: "#76766f" }}
-          />
-          <span
-            className="text-[11px] font-bold uppercase tracking-[0.15em]"
-            style={{ fontFamily: UI_FONT, color: "#76766f" }}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 6,
+              background: "#e879f9",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              boxShadow: "0 0 14px rgba(232,121,249,0.25)",
+            }}
           >
-            Edit Mode
-          </span>
-        </div>
+            <span style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", fontWeight: 900, color: "#0a0a08", lineHeight: 1, letterSpacing: "-0.03em" }}>CD</span>
+          </div>
+          {/* Wordmark: **COUNT DOWN** STUDIO */}
+          <div style={{ lineHeight: 1, textAlign: "left" }}>
+            <div style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", letterSpacing: "0.03em", color: "#e8e8e2" }}>
+              <b style={{ fontWeight: 800, color: "#e879f9" }}>COUNT DOWN</b>
+              <span style={{ fontWeight: 300, marginLeft: 6 }}>STUDIO</span>
+            </div>
+            <div style={{ fontSize: 9, color: "#76766f", letterSpacing: "0.22em", marginTop: 3, fontWeight: 700, textTransform: "uppercase" }}>
+              Concert Countdown Timer
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* ===== FULL-WIDTH SECOND STRIP: Concert Title + REHEARSAL / DOOR OPEN / SHOW TIME =====

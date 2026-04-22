@@ -2,11 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// Served from custom domain (countdown-studio.nrs1.jp) at root path.
-// Vite base is "/" since we're no longer under /count-down-studio/ subpath.
+// Served from GitHub Pages at https://nrs2013.github.io/count-down-studio/
+// Vite base must match the sub-path.
 export default defineConfig({
   plugins: [react()],
-  base: "/",
+  base: "/count-down-studio/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

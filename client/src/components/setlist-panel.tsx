@@ -209,7 +209,7 @@ function InlineSongCard({
           ? "rgba(234,179,8,0.03)"
           : "rgba(234,179,8,0.06)")
     : (isCurrent
-      ? "linear-gradient(135deg, rgba(192,38,211,0.15), rgba(232,121,249,0.08))"
+      ? "linear-gradient(135deg, rgba(155,102,175,0.15), rgba(193,134,200,0.08))"
       : isSelected
         ? "linear-gradient(135deg, rgba(6,182,212,0.12), rgba(34,211,238,0.06))"
         : isPast
@@ -231,7 +231,7 @@ function InlineSongCard({
           ? "rgba(250,204,21,0.08)"
           : "rgba(250,204,21,0.15)")
     : (isCurrent
-      ? "rgba(232,121,249,0.4)"
+      ? "rgba(193,134,200,0.4)"
       : isSelected
         ? "rgba(34,211,238,0.4)"
         : isPast
@@ -260,7 +260,7 @@ function InlineSongCard({
             ? { background: "linear-gradient(180deg, #7dd3fc, #38bdf8)", boxShadow: "0 0 8px rgba(56,189,248,0.4)" }
             : isEvent
             ? { background: "linear-gradient(180deg, #facc15, #eab308)", boxShadow: "0 0 8px rgba(250,204,21,0.4)" }
-            : { background: "linear-gradient(180deg, #e879f9, #c026d3)", boxShadow: "0 0 8px rgba(232,121,249,0.4)" }
+            : { background: "linear-gradient(180deg, #c186c8, #c026d3)", boxShadow: "0 0 8px rgba(193,134,200,0.4)" }
           }
         />
       )}
@@ -297,7 +297,7 @@ function InlineSongCard({
               className="text-[11px] font-medium"
               style={{
                 fontFamily: UI_FONT,
-                color: isMC ? "#38bdf8" : isEvent ? "#facc15" : isCurrent ? "#e879f9" : isSelected ? "#22d3ee" : "rgba(255,255,255,0.5)",
+                color: isMC ? "#38bdf8" : isEvent ? "#facc15" : isCurrent ? "#c186c8" : isSelected ? "#22d3ee" : "rgba(255,255,255,0.5)",
               }}
             >
               {isMC ? "MC" : isEvent ? "SP" : (songNumber ?? index + 1)}
@@ -311,7 +311,7 @@ function InlineSongCard({
           ) : (
             <>
               <div className="flex items-baseline gap-0 overflow-hidden">
-                <span className="text-fuchsia-400 text-[10px] mr-1 font-bold flex-shrink-0" style={{ textShadow: "0 0 8px rgba(232,121,249,0.3)" }}>NOW:</span>
+                <span className="text-fuchsia-400 text-[10px] mr-1 font-bold flex-shrink-0" style={{ textShadow: "0 0 8px rgba(193,134,200,0.3)" }}>NOW:</span>
                 {editingField === "title" ? (
                   <input
                     type="text"
@@ -889,7 +889,7 @@ export function SetlistPanel({
             className="flex-1 min-w-0 text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-400"
             style={{
               fontFamily: UI_FONT,
-              textShadow: "0 0 12px rgba(232,121,249,0.4)",
+              textShadow: "0 0 12px rgba(193,134,200,0.4)",
             }}
           >
             Concert Title
@@ -998,7 +998,7 @@ export function SetlistPanel({
             <div className="flex flex-col items-center justify-center py-12 text-white/30">
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-                style={{ background: "rgba(232,121,249,0.08)", border: "1px solid rgba(232,121,249,0.15)" }}
+                style={{ background: "rgba(193,134,200,0.08)", border: "1px solid rgba(193,134,200,0.15)" }}
               >
                 <Music className="w-7 h-7 text-fuchsia-400/50" />
               </div>

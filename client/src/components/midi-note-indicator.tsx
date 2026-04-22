@@ -83,7 +83,7 @@ export function MidiNoteIndicator({ lastMessage }: MidiNoteIndicatorProps) {
             style={{
               fontSize: 11,
               lineHeight: 1,
-              color: flash ? "rgba(232,121,249,0.9)" : "rgba(232,121,249,0.5)",
+              color: flash ? "rgba(193,134,200,0.9)" : "rgba(193,134,200,0.5)",
               transition: "color 0.15s ease",
               letterSpacing: "0.05em",
             }}
@@ -124,7 +124,7 @@ export function MidiNoteIndicator({ lastMessage }: MidiNoteIndicatorProps) {
               style={{
                 width: `${intensity * 100}%`,
                 background: flash
-                  ? "linear-gradient(90deg, #06b6d4, #e879f9)"
+                  ? "linear-gradient(90deg, #06b6d4, #c186c8)"
                   : "rgba(6,182,212,0.4)",
                 transition: "background 0.15s ease",
               }}

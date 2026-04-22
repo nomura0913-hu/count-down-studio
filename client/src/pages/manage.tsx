@@ -225,7 +225,7 @@ function MobileSongCard({
         </div>
         <span
           className="w-6 text-center text-xs font-bold shrink-0"
-          style={{ fontFamily: MONO_FONT, color: isEvent ? "rgba(250,204,21,0.7)" : "rgba(232,121,249,0.5)" }}
+          style={{ fontFamily: MONO_FONT, color: isEvent ? "rgba(250,204,21,0.7)" : "rgba(193,134,200,0.5)" }}
         >
           {isEvent ? "S" : (songNumber ?? index + 1)}
         </span>
@@ -1014,12 +1014,12 @@ export default function Manage() {
               width: 30,
               height: 30,
               borderRadius: 6,
-              background: "#e879f9",                  // solid fuchsia (not gradient)
+              background: "#c186c8",                  // solid fuchsia (not gradient)
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
-              boxShadow: "0 0 14px rgba(232,121,249,0.25)",
+              boxShadow: "0 0 14px rgba(193,134,200,0.25)",
             }}
           >
             <span style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", fontWeight: 900, color: "#0a0a08", lineHeight: 1, letterSpacing: "-0.03em" }}>CD</span>
@@ -1027,7 +1027,7 @@ export default function Manage() {
           {/* Wordmark: **COUNT DOWN** STUDIO */}
           <div style={{ lineHeight: 1, textAlign: "left" }}>
             <div style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", letterSpacing: "0.03em", color: "#e8e8e2" }}>
-              <b style={{ fontWeight: 800, color: "#e879f9" }}>COUNT DOWN</b>
+              <b style={{ fontWeight: 800, color: "#c186c8" }}>COUNT DOWN</b>
               <span style={{ fontWeight: 300, marginLeft: 6 }}>STUDIO</span>
             </div>
             <div style={{ fontSize: 9, color: "#76766f", letterSpacing: "0.22em", marginTop: 3, fontWeight: 700, textTransform: "uppercase" }}>
@@ -1287,8 +1287,8 @@ export default function Manage() {
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
               style={{
-                background: "rgba(232,121,249,0.08)",
-                border: "1px solid rgba(232,121,249,0.2)",
+                background: "rgba(193,134,200,0.08)",
+                border: "1px solid rgba(193,134,200,0.2)",
               }}
             >
               <Music className="w-7 h-7 text-fuchsia-400/50" />
@@ -1298,9 +1298,9 @@ export default function Manage() {
               onClick={handleNewConcert}
               className="flex items-center gap-1.5 mx-auto px-4 py-2 rounded-full text-fuchsia-300 text-sm font-medium tracking-wider uppercase transition-all duration-300"
               style={{
-                background: "rgba(232,121,249,0.12)",
-                border: "1px solid rgba(232,121,249,0.3)",
-                boxShadow: "0 0 15px rgba(232,121,249,0.1)",
+                background: "rgba(193,134,200,0.12)",
+                border: "1px solid rgba(193,134,200,0.3)",
+                boxShadow: "0 0 15px rgba(193,134,200,0.1)",
               }}
               data-testid="button-new-concert-empty"
             >

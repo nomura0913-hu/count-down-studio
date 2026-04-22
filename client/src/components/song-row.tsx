@@ -307,12 +307,12 @@ export function SongRow({
         ...sortableStyle,
         // PROMPTER-style: card floats above canvas with surface color + clear border.
         // Active: subtle accent tint + accent border (NOT left stripe—left stripe is too subtle).
-        background: isCurrent ? "rgba(232,121,249,0.12)" : "#323230", // surface (brighter than #262624 canvas)
+        background: isCurrent ? "rgba(193,134,200,0.12)" : "#323230", // surface (brighter than #262624 canvas)
         borderRadius: "10px",
         marginBottom: "6px",
-        border: isCurrent ? "1px solid #e879f9" : "1px solid #46463f",
+        border: isCurrent ? "1px solid #c186c8" : "1px solid #46463f",
         boxShadow: isCurrent
-          ? "0 0 0 1px rgba(232,121,249,0.15), 0 4px 12px rgba(0,0,0,0.25)"
+          ? "0 0 0 1px rgba(193,134,200,0.15), 0 4px 12px rgba(0,0,0,0.25)"
           : "0 1px 3px rgba(0,0,0,0.25)",
       }}
       data-testid={`${pid}-song-${song.id}`}
@@ -355,7 +355,7 @@ export function SongRow({
             fontFamily: MONO_FONT,
             fontSize: "12px",
             fontWeight: 700,
-            color: isCurrent ? "#e879f9" : "#76766f",
+            color: isCurrent ? "#c186c8" : "#76766f",
             width: 22, minWidth: 22, maxWidth: 22,
           }}
           data-testid={`text-song-index-${song.id}`}
@@ -369,7 +369,7 @@ export function SongRow({
           className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors duration-150"
           style={{
             color: isCurrent ? "#0a0a08" : "#a8a8a0",
-            background: isCurrent ? "#e879f9" : "#46463f",
+            background: isCurrent ? "#c186c8" : "#46463f",
             border: "none",
           }}
           onClick={() => onStartSong?.(index)}
@@ -824,9 +824,9 @@ export function InsertionRow({ onAddSong, onAddSpecial, onAddMC, onAddEncore, di
         disabled={disabled}
         className="flex-1 flex items-center justify-center gap-1 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
         style={{
-          color: "#e879f9",
-          background: "rgba(192,38,211,0.12)",
-          border: "1px solid rgba(232,121,249,0.15)",
+          color: "#c186c8",
+          background: "rgba(155,102,175,0.12)",
+          border: "1px solid rgba(193,134,200,0.15)",
         }}
         data-testid={`${pfx}insert-song`}
       >

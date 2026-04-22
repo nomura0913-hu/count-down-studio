@@ -616,7 +616,7 @@ export function PerformanceEditor({
               width: 30,
               height: 30,
               borderRadius: 6,
-              background: "#e879f9",
+              background: "#c186c8",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -628,7 +628,7 @@ export function PerformanceEditor({
           {/* Wordmark: **COUNT DOWN** STUDIO */}
           <div style={{ lineHeight: 1, textAlign: "left" }}>
             <div style={{ fontSize: 14, fontFamily: "'Helvetica Neue','Inter',sans-serif", letterSpacing: "0.03em", color: "#e8e8e2" }}>
-              <b style={{ fontWeight: 800, color: "#e879f9" }}>COUNT DOWN</b>
+              <b style={{ fontWeight: 800, color: "#c186c8" }}>COUNT DOWN</b>
               <span style={{ fontWeight: 300, marginLeft: 6 }}>STUDIO</span>
             </div>
             <div style={{ fontSize: 9, color: "#76766f", letterSpacing: "0.22em", marginTop: 3, fontWeight: 700, textTransform: "uppercase" }}>
@@ -666,8 +666,8 @@ export function PerformanceEditor({
             disabled={!outputOpen}
             className="h-9 w-9 shrink-0 rounded-lg flex items-center justify-center transition-colors duration-150"
             style={{
-              background: showingEventInfo ? "#e879f9" : "#323230",
-              border: showingEventInfo ? "1px solid #e879f9" : "1px solid #46463f",
+              background: showingEventInfo ? "#c186c8" : "#323230",
+              border: showingEventInfo ? "1px solid #c186c8" : "1px solid #46463f",
               opacity: outputOpen ? 1 : 0.35,
               cursor: outputOpen ? "pointer" : "not-allowed",
             }}
@@ -845,9 +845,9 @@ export function PerformanceEditor({
           {isIdle && songs.length > 0 && (
             <button onClick={() => onStartSong(0)} className={ctrlBtnClass}
               style={{
-                background: "#e879f9",
+                background: "#c186c8",
                 color: "#0a0a08",
-                border: "1px solid #e879f9",
+                border: "1px solid #c186c8",
               }}
               data-testid="editor-button-start"
             >

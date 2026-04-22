@@ -27,9 +27,9 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
         className="flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase transition-colors duration-150"
         style={{
           fontFamily: UI_FONT,
-          background: !outputOpen ? "#e879f9" : "#323230",
+          background: !outputOpen ? "#c186c8" : "#323230",
           color:      !outputOpen ? "#0a0a08" : "#a8a8a0",
-          border:     !outputOpen ? "1px solid #e879f9" : "1px solid #46463f",
+          border:     !outputOpen ? "1px solid #c186c8" : "1px solid #46463f",
         }}
         onClick={onOutputOff}
         data-testid="tab-setlist"
@@ -67,7 +67,7 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
             className="px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.14em] uppercase transition-colors duration-150"
             style={{
               fontFamily: MONO_FONT,
-              background: outputOpen ? "#e879f9" : "transparent",
+              background: outputOpen ? "#c186c8" : "transparent",
               color:      outputOpen ? "#0a0a08" : "#76766f",
             }}
             onClick={onOutputOn}

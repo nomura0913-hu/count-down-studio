@@ -89,10 +89,10 @@ export const INPUT_STYLES = {
 } as const;
 
 export const ACCENT_COLORS = {
-  fuchsia: "rgba(232,121,249,0.35)",
+  fuchsia: "rgba(193,134,200,0.35)",
   cyan: "rgba(6,182,212,0.35)",
   amber: "rgba(250,204,21,0.5)",
-  default: "rgba(232,121,249,0.35)",
+  default: "rgba(193,134,200,0.35)",
 } as const;
 
 export const HEADER_FONT = "'Bebas Neue', Impact, 'Arial Narrow', sans-serif";

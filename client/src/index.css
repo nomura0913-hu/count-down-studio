@@ -121,15 +121,15 @@
   --sidebar: var(--cds-bg-2);
   --sidebar-foreground: var(--cds-text);
   --sidebar-border: var(--cds-border);
-  --sidebar-primary: 292 84% 72%;      /* fuchsia accent (Count Down brand) */
+  --sidebar-primary: 293 38% 66%;      /* fuchsia accent (Count Down brand) */
   --sidebar-primary-foreground: 0 0% 98%;
   --sidebar-accent: var(--cds-surface);
   --sidebar-accent-foreground: var(--cds-text);
-  --sidebar-ring: 292 84% 72%;
+  --sidebar-ring: 293 38% 66%;
   --popover: var(--cds-bg-2);
   --popover-foreground: var(--cds-text);
   --popover-border: var(--cds-border);
-  --primary: 292 84% 72%;              /* fuchsia accent (kept) */
+  --primary: 293 38% 66%;              /* fuchsia accent (kept) */
   --primary-foreground: 0 0% 98%;
   --secondary: var(--cds-surface);
   --secondary-foreground: var(--cds-text);
@@ -140,7 +140,7 @@
   --destructive: 0 84% 42%;
   --destructive-foreground: 0 0% 98%;
   --input: var(--cds-border-hi);
-  --ring: 292 84% 72%;
+  --ring: 293 38% 66%;
   --chart-1: 292 84% 65%;
   --chart-2: 187 85% 55%;
   --chart-3: 340 80% 70%;

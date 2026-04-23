@@ -305,17 +305,15 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group`}
       style={{
         ...sortableStyle,
-        // Claude-style elevated card: top lit, bottom sinks into shadow.
-        // Wide lightness range (#40 → #22) for clear depth off the dark canvas.
-        background: isCurrent
-          ? "linear-gradient(180deg, #4a3a48 0%, #2a1e28 100%)"
-          : "linear-gradient(180deg, #403f3a 0%, #22221f 100%)",
+        // Flat Claude-style: solid surface, no internal gradient, minimal shadow.
+        // Depth comes from canvas-vs-card contrast, not inner lighting.
+        background: isCurrent ? "#3a2a38" : "#2c2c2a",
         borderRadius: "10px",
         marginBottom: "8px",
-        border: isCurrent ? "1px solid #c186c8" : "1px solid #4a4a43",
+        border: isCurrent ? "1px solid #c186c8" : "1px solid #3a3a35",
         boxShadow: isCurrent
-          ? "0 0 0 1px rgba(193,134,200,0.4), 0 8px 22px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.1) inset"
-          : "0 4px 14px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.09) inset",
+          ? "0 0 0 1px rgba(193,134,200,0.25)"
+          : "none",
       }}
       data-testid={`${pid}-song-${song.id}`}
       data-song-row=""

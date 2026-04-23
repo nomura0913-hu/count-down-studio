@@ -786,21 +786,21 @@ export function PerformanceEditor({
       backgroundImage:
         "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(193,134,200,0.08), transparent 60%), radial-gradient(ellipse 80% 60% at 50% 100%, rgba(60,40,70,0.1), transparent 60%)",
     }} data-testid="performance-editor">
-      {/* ===== COMPACT HEADER: Concert Title + schedule + SAVE/IMPORT (one row) =====
+      {/* ===== HEADER: Concert Title + schedule + SAVE/IMPORT (one row) =====
           Reserve right padding for ModeTabBar (fixed topbar on the right in App.tsx). */}
       <div
-        className="shrink-0 w-full px-4 py-2"
+        className="shrink-0 w-full px-5 py-4"
         style={{
           background: "#1a1918",
           paddingRight: 260,
         }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={toggleEventInfo}
             disabled={!outputOpen}
-            className="h-9 w-9 shrink-0 rounded-sm flex items-center justify-center transition-colors duration-150"
+            className="h-11 w-11 shrink-0 rounded-sm flex items-center justify-center transition-colors duration-150"
             style={{
               background: showingEventInfo ? "#c186c8" : "#1c1b19",
               border: showingEventInfo ? "1px solid #c186c8" : "1px solid #2c2a27",
@@ -814,7 +814,7 @@ export function PerformanceEditor({
           </button>
           <input
             type="text"
-            className="flex-1 min-w-0 h-9 text-sm rounded-sm px-3 font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-fuchsia-500/50 transition-all duration-150"
+            className="flex-1 min-w-0 h-11 text-base rounded-sm px-3 font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-fuchsia-500/50 transition-all duration-150"
             style={{ background: "#1c1b19", border: "1px solid #2c2a27", color: "#e8e8e2", fontFamily: UI_FONT }}
             value={setlistNameValue}
             onChange={(e) => { if (setlist) setSetlistNameValue(e.target.value); }}
@@ -827,12 +827,12 @@ export function PerformanceEditor({
             data-testid="editor-input-setlist-name"
           />
           {/* REHEARSAL */}
-          <div className="flex flex-col items-center shrink-0" style={{ width: "72px" }}>
-            <span className="text-[9px] uppercase font-bold leading-none mb-1" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>REHEARSAL</span>
+          <div className="flex flex-col items-center shrink-0" style={{ width: "88px" }}>
+            <span className="text-[11px] uppercase font-bold leading-none mb-1.5" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>REHEARSAL</span>
             <input
               type="text"
               inputMode="numeric"
-              className="w-full h-8 text-sm rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
+              className="w-full h-10 text-base rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
               style={{ background: "#1c1b19", border: "1px solid #2c2a27", color: "#e8e8e2", fontFamily: MONO_FONT }}
               value={rehearsalValue}
               onChange={(e) => { setRehearsalValue(imeRehearsalRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
@@ -846,12 +846,12 @@ export function PerformanceEditor({
             />
           </div>
           {/* DOOR OPEN */}
-          <div className="flex flex-col items-center shrink-0" style={{ width: "72px" }}>
-            <span className="text-[9px] uppercase font-bold leading-none mb-1" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>DOOR OPEN</span>
+          <div className="flex flex-col items-center shrink-0" style={{ width: "88px" }}>
+            <span className="text-[11px] uppercase font-bold leading-none mb-1.5" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>DOOR OPEN</span>
             <input
               type="text"
               inputMode="numeric"
-              className="w-full h-8 text-sm rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
+              className="w-full h-10 text-base rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
               style={{ background: "#1c1b19", border: "1px solid #2c2a27", color: "#e8e8e2", fontFamily: MONO_FONT }}
               value={doorOpenValue}
               onChange={(e) => { setDoorOpenValue(imeDoorRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
@@ -865,12 +865,12 @@ export function PerformanceEditor({
             />
           </div>
           {/* SHOW START (renamed from SHOW TIME) */}
-          <div className="flex flex-col items-center shrink-0" style={{ width: "72px" }}>
-            <span className="text-[9px] uppercase font-bold leading-none mb-1" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>SHOW START</span>
+          <div className="flex flex-col items-center shrink-0" style={{ width: "88px" }}>
+            <span className="text-[11px] uppercase font-bold leading-none mb-1.5" style={{ fontFamily: UI_FONT, letterSpacing: "0.12em", color: "#a8a8a0" }}>SHOW START</span>
             <input
               type="text"
               inputMode="numeric"
-              className="w-full h-8 text-sm rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
+              className="w-full h-10 text-base rounded-sm px-2 text-center font-semibold placeholder:text-[#76766f] focus:outline-none focus:ring-1 focus:ring-[#2c2a27] transition-all duration-150"
               style={{ background: "#1c1b19", border: "1px solid #2c2a27", color: "#e8e8e2", fontFamily: MONO_FONT }}
               value={showTimeValue}
               onChange={(e) => { setShowTimeValue(imeShowRef.current ? e.target.value : filterTimeInput(e.target.value)); }}
@@ -886,7 +886,7 @@ export function PerformanceEditor({
           {/* SAVE + IMPORT buttons */}
           <button
             onClick={handleExport}
-            className="flex items-center gap-1.5 px-3 h-9 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
+            className="flex items-center gap-1.5 px-4 h-11 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
             style={{ fontFamily: HEADER_FONT, color: "#a8a8a0", background: "#1c1b19", border: "1px solid #2c2a27" }}
             data-testid="editor-button-save-top"
             title="Save setlist"
@@ -895,7 +895,7 @@ export function PerformanceEditor({
           </button>
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 h-9 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
+            className="flex items-center gap-1.5 px-4 h-11 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
             style={{ fontFamily: HEADER_FONT, color: "#a8a8a0", background: "#1c1b19", border: "1px solid #2c2a27" }}
             data-testid="editor-button-import-top"
             title="Import setlist"

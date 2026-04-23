@@ -40,11 +40,11 @@ import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 // ==================================================================
-// OvertureElapsedDisplay: tracks minutes/seconds since the first song started.
-// Starts the clock when countdownStatus first transitions to "running".
-// Reset button clears it manually.
+// TotalTimeAndClockDisplay:
+//   Left half  = TOTAL TIME elapsed since first song started (with RESET)
+//   Right half = current wall clock time
 // ==================================================================
-function OvertureElapsedDisplay({ countdownStatus }: { countdownStatus: CountdownStatus }) {
+function TotalTimeAndClockDisplay({ countdownStatus }: { countdownStatus: CountdownStatus }) {
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(Date.now());
 
@@ -54,80 +54,90 @@ function OvertureElapsedDisplay({ countdownStatus }: { countdownStatus: Countdow
     }
   }, [countdownStatus, startedAt]);
 
+  // Always tick every second for the wall clock; the total timer reuses `now`
   useEffect(() => {
-    if (startedAt === null) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-  }, [startedAt]);
+  }, []);
 
   const elapsed = startedAt ? Math.floor((now - startedAt) / 1000) : 0;
   const hh = Math.floor(elapsed / 3600);
   const mm = Math.floor((elapsed % 3600) / 60);
   const ss = elapsed % 60;
-  const formatted = hh > 0
+  const totalFormatted = hh > 0
     ? `${hh}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`
     : `${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
 
   const isRunning = startedAt !== null;
 
+  const d = new Date(now);
+  const clockFormatted = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+
+  const panelStyle: React.CSSProperties = {
+    flex: 1,
+    minHeight: 60,
+    padding: "10px 16px",
+    borderRadius: 3,
+    border: "1px solid #2c2a27",
+    background: "#1c1b19",
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+  };
+
+  const labelStyle: React.CSSProperties = {
+    fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
+    fontSize: 13,
+    fontWeight: 700,
+    letterSpacing: "0.18em",
+  };
+
+  const valueStyle: React.CSSProperties = {
+    fontFamily: "'JetBrains Mono', 'Menlo', monospace",
+    fontSize: 24,
+    fontWeight: 900,
+    letterSpacing: "0.02em",
+    lineHeight: 1,
+    flex: 1,
+    textAlign: "center",
+  };
+
   return (
     <div
-      className="flex items-center justify-between w-full gap-3"
-      style={{
-        minHeight: 60,
-        padding: "10px 16px",
-        borderRadius: 3,
-        border: "1px solid #2c2a27",
-        background: "#1c1b19",
-        marginTop: 8,
-      }}
-      data-testid="overture-elapsed-display"
+      className="flex w-full gap-2"
+      style={{ marginTop: 8 }}
+      data-testid="total-time-and-clock-display"
     >
-      <span
-        style={{
-          fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
-          fontSize: 14,
-          fontWeight: 700,
-          letterSpacing: "0.18em",
-          color: isRunning ? "#a8a8a0" : "#5a5a54",
-        }}
-      >
-        OVERTURE
-      </span>
-      <span
-        style={{
-          fontFamily: "'JetBrains Mono', 'Menlo', monospace",
-          fontSize: 28,
-          fontWeight: 900,
-          letterSpacing: "0.02em",
-          color: isRunning ? "#e8b04a" : "#5a5a54",
-          lineHeight: 1,
-          flex: 1,
-          textAlign: "center",
-        }}
-      >
-        {formatted}
-      </span>
-      <button
-        onClick={() => setStartedAt(null)}
-        disabled={!isRunning}
-        style={{
-          fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: "0.15em",
-          color: isRunning ? "#a8a8a0" : "#3a3a35",
-          background: isRunning ? "#222220" : "transparent",
-          border: isRunning ? "1px solid #2c2a27" : "1px solid transparent",
-          padding: "4px 10px",
-          borderRadius: 2,
-          cursor: isRunning ? "pointer" : "not-allowed",
-        }}
-        title="Reset overture timer"
-        data-testid="button-reset-overture"
-      >
-        RESET
-      </button>
+      {/* LEFT: TOTAL TIME */}
+      <div style={panelStyle} data-testid="total-time-display">
+        <span style={{ ...labelStyle, color: isRunning ? "#a8a8a0" : "#5a5a54" }}>TOTAL TIME</span>
+        <span style={{ ...valueStyle, color: isRunning ? "#e8b04a" : "#5a5a54" }}>{totalFormatted}</span>
+        <button
+          onClick={() => setStartedAt(null)}
+          disabled={!isRunning}
+          style={{
+            fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.15em",
+            color: isRunning ? "#a8a8a0" : "#3a3a35",
+            background: isRunning ? "#222220" : "transparent",
+            border: isRunning ? "1px solid #2c2a27" : "1px solid transparent",
+            padding: "3px 8px",
+            borderRadius: 2,
+            cursor: isRunning ? "pointer" : "not-allowed",
+          }}
+          title="Reset total timer"
+          data-testid="button-reset-total"
+        >
+          RESET
+        </button>
+      </div>
+      {/* RIGHT: current wall clock */}
+      <div style={panelStyle} data-testid="wall-clock-display">
+        <span style={{ ...labelStyle, color: "#a8a8a0" }}>NOW</span>
+        <span style={{ ...valueStyle, color: "#e8e8e2" }}>{clockFormatted}</span>
+      </div>
     </div>
   );
 }
@@ -1022,8 +1032,8 @@ export function PerformanceEditor({
             enabled={midiEnabled}
             onToggle={() => onToggleMidi?.()}
           />
-          {/* Overture elapsed timer — starts when first song begins */}
-          <OvertureElapsedDisplay countdownStatus={countdownStatus} />
+          {/* Total time elapsed + current wall clock */}
+          <TotalTimeAndClockDisplay countdownStatus={countdownStatus} />
         </div>
 
         {/* Bottom spacer — warm gray (mirrors top spacer, centers the preview+controls) */}

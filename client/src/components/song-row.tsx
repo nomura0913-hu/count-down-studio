@@ -302,7 +302,7 @@ export function SongRow({
   return (
     <div
       ref={setNodeRef}
-      className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group`}
+      className={`flex items-center gap-1 py-1.5 px-2 transition-all duration-200 group`}
       style={{
         ...sortableStyle,
         // Flat Claude-style: solid surface, no internal gradient, minimal shadow.

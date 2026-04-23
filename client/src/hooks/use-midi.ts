@@ -24,11 +24,25 @@ export function useMidi(options: UseMidiOptions = {}) {
   const [isConnected, setIsConnected] = useState(false);
   const [devices, setDevices] = useState<MidiDevice[]>([]);
   const [lastMessage, setLastMessage] = useState<MidiMessage | null>(null);
+  const [enabled, setEnabledState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    const stored = window.localStorage.getItem("cds-midi-enabled");
+    return stored === null ? true : stored === "1";
+  });
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
+
+  const setEnabled = useCallback((next: boolean) => {
+    setEnabledState(next);
+    try { window.localStorage.setItem("cds-midi-enabled", next ? "1" : "0"); } catch {}
+  }, []);
+
   const midiAccessRef = useRef<MIDIAccess | null>(null);
   const optionsRef = useRef(options);
   optionsRef.current = options;
 
   const handleMidiMessage = useCallback((event: MIDIMessageEvent) => {
+    if (!enabledRef.current) return;
     if (!event.data || event.data.length < 2) return;
 
     const [status, note, velocity] = event.data;
@@ -114,7 +128,9 @@ export function useMidi(options: UseMidiOptions = {}) {
     isSupported,
     isConnected,
     devices,
-    lastMessage,
+    lastMessage: enabled ? lastMessage : null,
+    enabled,
+    setEnabled,
     reconnect: initialize,
   };
 }

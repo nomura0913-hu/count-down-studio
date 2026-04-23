@@ -968,6 +968,8 @@ export default function Manage() {
             isEvent={displayIsEvent}
             xTime={displayXTime}
             lastMidiMessage={midi.lastMessage}
+            midiEnabled={midi.enabled}
+            onToggleMidi={() => midi.setEnabled(!midi.enabled)}
             onShowEventInfoChange={setShowEventInfoOnPrimary}
             stopEventInfoRef={stopEventInfoRef}
             subTimerFormatted={subTimerFormatted}

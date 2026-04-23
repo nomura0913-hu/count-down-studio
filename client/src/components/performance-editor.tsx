@@ -40,40 +40,77 @@ import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 // ==================================================================
-// LiveMidiBigDisplay: prominent MIDI signal readout below the countdown
-// preview. Scales up the MidiNoteIndicator so it reads from across the room.
+// LiveMidiBigDisplay: left half = MIDI ON/OFF toggle,
+// right half = incoming MIDI signal (large readout when ON).
 // ==================================================================
-function LiveMidiBigDisplay({ lastMessage }: { lastMessage: MidiMessage | null }) {
+function LiveMidiBigDisplay({
+  lastMessage,
+  enabled,
+  onToggle,
+}: {
+  lastMessage: MidiMessage | null;
+  enabled: boolean;
+  onToggle: () => void;
+}) {
   return (
     <div
-      className="flex items-center justify-center w-full"
-      style={{
-        minHeight: 84,
-        padding: "12px 16px",
-        borderRadius: 3,
-        border: "1px solid #242320",
-        background: "#201e1c",
-      }}
+      className="flex items-stretch w-full gap-2"
+      style={{ minHeight: 84 }}
       data-testid="live-midi-big-display"
     >
-      {lastMessage ? (
-        <div style={{ transform: "scale(2.4)", transformOrigin: "center" }}>
-          <MidiNoteIndicator lastMessage={lastMessage} />
-        </div>
-      ) : (
-        <div
-          style={{
-            fontFamily: "'JetBrains Mono', 'Menlo', monospace",
-            fontSize: 13,
-            fontWeight: 700,
-            letterSpacing: "0.2em",
-            color: "#5a5a54",
-            textTransform: "uppercase",
-          }}
-        >
-          MIDI signal will appear here
-        </div>
-      )}
+      {/* LEFT: MIDI ON/OFF toggle */}
+      <button
+        onClick={onToggle}
+        className="flex flex-col items-center justify-center transition-colors duration-150"
+        style={{
+          flex: "0 0 40%",
+          borderRadius: 3,
+          border: enabled ? "1px solid rgba(193,134,200,0.55)" : "1px solid #2c2a27",
+          background: enabled ? "rgba(193,134,200,0.14)" : "#1c1b19",
+          color: enabled ? "#d8b8de" : "#5a5a54",
+          fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
+          letterSpacing: "0.2em",
+          cursor: "pointer",
+        }}
+        data-testid="button-midi-toggle"
+        title={enabled ? "クリックでMIDI受信をオフ" : "クリックでMIDI受信をオン"}
+      >
+        <span style={{ fontSize: 14, fontWeight: 700, opacity: 0.7, marginBottom: 4 }}>MIDI</span>
+        <span style={{ fontSize: 32, fontWeight: 900, lineHeight: 1 }}>
+          {enabled ? "ON" : "OFF"}
+        </span>
+      </button>
+
+      {/* RIGHT: Live signal display */}
+      <div
+        className="flex items-center justify-center flex-1"
+        style={{
+          borderRadius: 3,
+          border: "1px solid #242320",
+          background: "#201e1c",
+          padding: "12px 16px",
+          opacity: enabled ? 1 : 0.4,
+        }}
+      >
+        {enabled && lastMessage ? (
+          <div style={{ transform: "scale(2.4)", transformOrigin: "center" }}>
+            <MidiNoteIndicator lastMessage={lastMessage} />
+          </div>
+        ) : (
+          <div
+            style={{
+              fontFamily: "'JetBrains Mono', 'Menlo', monospace",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              color: "#5a5a54",
+              textTransform: "uppercase",
+            }}
+          >
+            {enabled ? "waiting for signal" : "midi disabled"}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -106,6 +143,8 @@ interface PerformanceEditorProps {
   isEvent?: boolean;
   xTime?: boolean;
   lastMidiMessage?: MidiMessage | null;
+  midiEnabled?: boolean;
+  onToggleMidi?: () => void;
   onShowEventInfoChange?: (showing: boolean) => void;
   stopEventInfoRef?: React.MutableRefObject<(() => void) | null>;
   subTimerFormatted?: string;
@@ -142,6 +181,8 @@ export function PerformanceEditor({
   isEvent,
   xTime,
   lastMidiMessage,
+  midiEnabled = true,
+  onToggleMidi,
   onShowEventInfoChange,
   stopEventInfoRef,
   subTimerFormatted,
@@ -915,8 +956,12 @@ export function PerformanceEditor({
               <Square className="w-3.5 h-3.5" /> Stop
             </button>
           )}
-          {/* Live MIDI signal display — shows incoming MIDI note prominently */}
-          <LiveMidiBigDisplay lastMessage={lastMidiMessage ?? null} />
+          {/* Live MIDI signal display with ON/OFF toggle */}
+          <LiveMidiBigDisplay
+            lastMessage={lastMidiMessage ?? null}
+            enabled={midiEnabled}
+            onToggle={() => onToggleMidi?.()}
+          />
         </div>
 
         {/* Bottom spacer — warm gray (mirrors top spacer, centers the preview+controls) */}

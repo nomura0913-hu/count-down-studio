@@ -914,7 +914,8 @@ export function PerformanceEditor({
         className="flex flex-col shrink-0 w-1/2 h-full"
         style={{ background: "#1a1918" }}
       >
-        {/* No top spacer — preview aligns with row 1 on the right side */}
+        {/* Top spacer — matches the height of the SongTableHeader so the preview aligns with row 1 */}
+        <div className="shrink-0" style={{ height: 40, background: "#1a1918" }} />
 
         {/* 16:9 preview rectangle — ONLY this is pure black, capped so it never overflows */}
         <div className="px-6 w-full shrink-0" style={{ background: "#1a1918" }}>

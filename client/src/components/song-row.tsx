@@ -559,7 +559,7 @@ export function SongRow({
         <StyledSelect
           value={song.midiNote !== null && song.midiNote !== undefined ? String(song.midiNote) : ""}
           onChange={handleMidiChange}
-          className="w-[56px] shrink-0"
+          className="w-[72px] shrink-0"
           hasValue={song.midiNote !== null && song.midiNote !== undefined}
           testId={`${pid}-select-midi-${song.id}`}
         >
@@ -621,7 +621,7 @@ export function SongTableHeader({ showPlayButton = false, showMidiColumn = false
       {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替IN</span>}
       {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替OUT</span>}
       <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px", letterSpacing: "-0.05em" }}>着替時間</span>
-      {showMidiColumn && <span className="w-[56px] text-center" style={{ color: "#76766f" }}>MIDI</span>}
+      {showMidiColumn && <span className="w-[72px] text-center" style={{ color: "#76766f" }}>MIDI</span>}
       <span className="w-5" />
     </div>
   );

@@ -73,8 +73,8 @@ export const MIDI_NOTES_BY_NAME: { noteName: string; notes: { value: number; lab
 // Claude-style: inputs are "pressed into" the card surface (darker than card).
 // Gives clear visual hierarchy: card raised, input sunken.
 export const INPUT_STYLES = {
-  border: "1px solid #2a231e",
-  background: "#0e0a08",                // darker than card — reads as inset
+  border: "1px solid #242320",
+  background: "#0c0b0a",                // darker than card — reads as inset
   glowFocused: (accent: string) => {
     const match = accent.match(/rgba\(([^)]+)\)/);
     if (match) {
@@ -86,7 +86,7 @@ export const INPUT_STYLES = {
     }
     return `0 0 0 2px ${accent}`;
   },
-  borderBlur: "#2a231e",
+  borderBlur: "#242320",
 } as const;
 
 export const ACCENT_COLORS = {
@@ -101,7 +101,7 @@ export const TABLE_HEADER_STYLE = {
   color: "#a8a8a0",                  // --cds-text-2
   borderBottom: "1px solid rgba(193,134,200,0.25)", // subtle purple-tinted divider only
   fontFamily: HEADER_FONT,
-  background: "#181411",             // match canvas — no band effect
+  background: "#1a1918",             // match canvas — no band effect
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
 };

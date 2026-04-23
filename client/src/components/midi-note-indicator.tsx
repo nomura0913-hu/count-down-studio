@@ -110,7 +110,7 @@ export function MidiNoteIndicator({ lastMessage }: MidiNoteIndicatorProps) {
             style={{
               width: 28,
               height: 3,
-              background: "#322a24",
+              background: "#2c2a27",
             }}
           >
             <div

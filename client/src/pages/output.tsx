@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from "react";
 import { useLocation } from "wouter";
 import { useCountdownReceiver } from "@/hooks/use-countdown-broadcast";
 import { CountdownDisplay } from "@/components/countdown-display";
@@ -16,6 +16,11 @@ function formatHMS(ms: number): string {
   const s = total % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
+
+// Same design-canvas approach as CountdownDisplay — 1920x1080 fixed layout,
+// scaled to fit whatever screen it's on. Guarantees a single 16:9 frame.
+const SUMMARY_DESIGN_W = 1920;
+const SUMMARY_DESIGN_H = 1080;
 
 function ConcertSummaryDisplay({
   totalMs,
@@ -36,6 +41,25 @@ function ConcertSummaryDisplay({
   const SERIF = "'Cormorant Garamond', 'Playfair Display', Georgia, serif";
   const DISPLAY = "'Archivo', 'Inter', system-ui, sans-serif";
 
+  // Fit the 1920x1080 design canvas inside whatever viewport we're given — same
+  // algorithm as CountdownDisplay so the two screens behave identically.
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [scale, setScale] = useState(1);
+  const updateScale = useCallback(() => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const sx = rect.width / SUMMARY_DESIGN_W;
+    const sy = rect.height / SUMMARY_DESIGN_H;
+    setScale(Math.min(sx, sy));
+  }, []);
+  useLayoutEffect(() => {
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, [updateScale]);
+
+  // ---- Inner sub-components (coord system = 1920x1080 design px) ----
   const SegmentCard = ({
     title,
     label,
@@ -46,24 +70,22 @@ function ConcertSummaryDisplay({
     segments: number[];
   }) => (
     <div
-      className="flex flex-col items-stretch"
       style={{
-        width: "26vw",
-        minWidth: 280,
-        padding: "2vh 2.4vw",
+        width: 560,
+        padding: "32px 44px",
         background: "rgba(255,255,255,0.015)",
         border: "1px solid rgba(232,176,74,0.12)",
-        borderRadius: 6,
+        borderRadius: 8,
       }}
     >
       <div
         style={{
           fontFamily: DISPLAY,
           letterSpacing: "0.5em",
-          fontSize: "min(16px, 1.1vw)",
+          fontSize: 22,
           fontWeight: 500,
           color: "rgba(232,176,74,0.75)",
-          marginBottom: "1.5vh",
+          marginBottom: 24,
           textTransform: "uppercase",
           textAlign: "center",
         }}
@@ -75,33 +97,35 @@ function ConcertSummaryDisplay({
           style={{
             fontFamily: SERIF,
             fontStyle: "italic",
-            fontSize: "min(22px, 1.6vw)",
+            fontSize: 28,
             fontWeight: 300,
             color: "rgba(168,168,160,0.35)",
             textAlign: "center",
-            padding: "1vh 0",
+            padding: "18px 0",
           }}
         >
           — none —
         </div>
       ) : (
-        <div className="flex flex-col w-full" style={{ gap: "0.8vh" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {segments.map((ms, i) => (
             <div
               key={i}
-              className="flex items-baseline justify-between w-full"
               style={{
-                gap: 18,
-                paddingBottom: "0.6vh",
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 24,
+                paddingBottom: 8,
                 borderBottom: i === segments.length - 1 ? "none" : "1px solid rgba(168,168,160,0.08)",
               }}
             >
               <div
                 style={{
                   fontFamily: DISPLAY,
-                  fontSize: "min(16px, 1.15vw)",
+                  fontSize: 22,
                   fontWeight: 500,
-                  letterSpacing: "0.28em",
+                  letterSpacing: "0.3em",
                   color: "rgba(168,168,160,0.7)",
                   textTransform: "uppercase",
                 }}
@@ -111,7 +135,7 @@ function ConcertSummaryDisplay({
               <div
                 style={{
                   fontFamily: DISPLAY,
-                  fontSize: "min(36px, 2.6vw)",
+                  fontSize: 48,
                   fontWeight: 200,
                   lineHeight: 1,
                   color: "#e8e8e2",
@@ -129,12 +153,12 @@ function ConcertSummaryDisplay({
   );
 
   const ClockStat = ({ label, value }: { label: string; value: string }) => (
-    <div className="flex flex-col items-center" style={{ gap: 6 }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
       <div
         style={{
           fontFamily: DISPLAY,
           letterSpacing: "0.5em",
-          fontSize: "min(14px, 1vw)",
+          fontSize: 18,
           fontWeight: 500,
           color: "rgba(168,168,160,0.65)",
           textTransform: "uppercase",
@@ -145,7 +169,7 @@ function ConcertSummaryDisplay({
       <div
         style={{
           fontFamily: DISPLAY,
-          fontSize: "min(54px, 3.6vw)",
+          fontSize: 72,
           fontWeight: 200,
           lineHeight: 1,
           color: "#e8e8e2",
@@ -158,127 +182,150 @@ function ConcertSummaryDisplay({
     </div>
   );
 
-  // Single 16:9 frame, no scroll. Vertical flow:
-  //   header (title + date + subtitle) ~20vh
-  //   TOTAL TIME hero ~32vh
-  //   MC / EN cards side by side ~32vh
-  //   START / END footer ~16vh
+  // OUTER: fills the viewport. INNER: a fixed 1920x1080 design canvas scaled to fit.
   return (
     <div
-      className="w-screen h-screen flex flex-col items-center overflow-hidden"
+      ref={containerRef}
+      className="w-full h-full flex items-center justify-center select-none overflow-hidden"
       style={{
         background: "#0c0b0a",
         backgroundImage:
           "radial-gradient(ellipse 55% 40% at 50% 22%, rgba(232,176,74,0.12), transparent 65%), radial-gradient(ellipse 85% 60% at 50% 100%, rgba(193,134,200,0.07), transparent 65%)",
         animation: "summaryFadeIn 1.6s ease-out forwards",
-        padding: "3vh 3vw",
-        justifyContent: "space-between",
       }}
       data-testid="concert-summary"
     >
-      {/* ====== TOP: Title + Date ====== */}
-      <div className="flex flex-col items-center shrink-0">
-        <div
-          style={{
-            fontFamily: SERIF,
-            fontStyle: "italic",
-            fontSize: "min(110px, 8.5vw)",
-            fontWeight: 300,
-            color: "rgba(232,176,74,0.95)",
-            letterSpacing: "0.005em",
-            lineHeight: 0.95,
-            textShadow: "0 0 80px rgba(232,176,74,0.2)",
-          }}
-        >
-          End of Show
-        </div>
-        {date ? (
-          <div
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: "min(20px, 1.4vw)",
-              fontWeight: 300,
-              color: "rgba(232,176,74,0.6)",
-              marginTop: "1.2vh",
-              letterSpacing: "0.4em",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {date}
-          </div>
-        ) : null}
-        <div
-          style={{
-            fontFamily: SERIF,
-            fontStyle: "italic",
-            fontSize: "min(22px, 1.6vw)",
-            fontWeight: 300,
-            color: "rgba(168,168,160,0.5)",
-            marginTop: "0.6vh",
-            letterSpacing: "0.18em",
-          }}
-        >
-          ——  thank you for tonight  ——
-        </div>
-      </div>
-
-      {/* ====== TOTAL TIME — hero, center-stage ====== */}
       <div
-        className="flex flex-col items-center justify-center shrink-0"
         style={{
-          padding: "2.4vh 5vw",
-          background: "rgba(232,176,74,0.025)",
-          border: "1px solid rgba(232,176,74,0.22)",
-          borderRadius: 10,
-          boxShadow: "0 0 120px rgba(232,176,74,0.08) inset",
+          width: SUMMARY_DESIGN_W,
+          height: SUMMARY_DESIGN_H,
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
+          flexShrink: 0,
+          position: "relative",
         }}
       >
+        {/* Inner layout — absolute values sized for a 1920x1080 canvas.
+            Rough vertical budget: 260 (header) / 360 (total time) / 310 (breakdowns) / 150 (footer) = 1080. */}
         <div
           style={{
-            fontFamily: DISPLAY,
-            letterSpacing: "0.55em",
-            fontSize: "min(18px, 1.3vw)",
-            fontWeight: 500,
-            color: "rgba(232,176,74,0.9)",
-            marginBottom: "1.5vh",
-            textTransform: "uppercase",
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "70px 120px 70px",
           }}
         >
-          Total Time
-        </div>
-        <div
-          style={{
-            fontFamily: DISPLAY,
-            fontSize: "min(170px, 14vw)",
-            fontWeight: 100,
-            lineHeight: 0.9,
-            color: "#f0c77a",
-            letterSpacing: "0.02em",
-            fontVariantNumeric: "tabular-nums",
-            textShadow: "0 0 80px rgba(232,176,74,0.35)",
-          }}
-        >
-          {formatHMS(totalMs)}
-        </div>
-      </div>
+          {/* ====== TOP: Title + Date ====== */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div
+              style={{
+                fontFamily: SERIF,
+                fontStyle: "italic",
+                fontSize: 148,
+                fontWeight: 300,
+                color: "rgba(232,176,74,0.95)",
+                letterSpacing: "0.005em",
+                lineHeight: 0.95,
+                textShadow: "0 0 80px rgba(232,176,74,0.2)",
+              }}
+            >
+              End of Show
+            </div>
+            {date ? (
+              <div
+                style={{
+                  fontFamily: DISPLAY,
+                  fontSize: 24,
+                  fontWeight: 300,
+                  color: "rgba(232,176,74,0.6)",
+                  marginTop: 18,
+                  letterSpacing: "0.4em",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {date}
+              </div>
+            ) : null}
+            <div
+              style={{
+                fontFamily: SERIF,
+                fontStyle: "italic",
+                fontSize: 28,
+                fontWeight: 300,
+                color: "rgba(168,168,160,0.5)",
+                marginTop: 10,
+                letterSpacing: "0.18em",
+              }}
+            >
+              ——  thank you for tonight  ——
+            </div>
+          </div>
 
-      {/* ====== MC / ENCORE breakdown side-by-side — fixed width, not stretched ====== */}
-      <div className="flex items-start justify-center shrink-0" style={{ gap: "3vw" }}>
-        <SegmentCard title="MC Times" label="MC" segments={mcSegments} />
-        <SegmentCard title="Encore Times" label="EN" segments={encoreSegments} />
-      </div>
+          {/* ====== TOTAL TIME — hero ====== */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "28px 100px 34px",
+              background: "rgba(232,176,74,0.025)",
+              border: "1px solid rgba(232,176,74,0.22)",
+              borderRadius: 12,
+              boxShadow: "0 0 120px rgba(232,176,74,0.08) inset",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: DISPLAY,
+                letterSpacing: "0.55em",
+                fontSize: 22,
+                fontWeight: 500,
+                color: "rgba(232,176,74,0.9)",
+                marginBottom: 16,
+                textTransform: "uppercase",
+              }}
+            >
+              Total Time
+            </div>
+            <div
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 220,
+                fontWeight: 100,
+                lineHeight: 0.9,
+                color: "#f0c77a",
+                letterSpacing: "0.02em",
+                fontVariantNumeric: "tabular-nums",
+                textShadow: "0 0 80px rgba(232,176,74,0.35)",
+              }}
+            >
+              {formatHMS(totalMs)}
+            </div>
+          </div>
 
-      {/* ====== BOTTOM: START / END wall clocks ====== */}
-      <div className="flex items-center justify-center shrink-0" style={{ gap: "6vw" }}>
-        <ClockStat label="Start" value={startTime} />
-        <div
-          style={{
-            width: 1,
-            height: "5vh",
-            background: "linear-gradient(to bottom, transparent, rgba(232,176,74,0.3), transparent)",
-          }}
-        />
-        <ClockStat label="End" value={endTime} />
+          {/* ====== MC / ENCORE breakdowns ====== */}
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 60 }}>
+            <SegmentCard title="MC Times" label="MC" segments={mcSegments} />
+            <SegmentCard title="Encore Times" label="EN" segments={encoreSegments} />
+          </div>
+
+          {/* ====== BOTTOM: START / END wall clocks ====== */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 120 }}>
+            <ClockStat label="Start" value={startTime} />
+            <div
+              style={{
+                width: 1,
+                height: 64,
+                background: "linear-gradient(to bottom, transparent, rgba(232,176,74,0.3), transparent)",
+              }}
+            />
+            <ClockStat label="End" value={endTime} />
+          </div>
+        </div>
       </div>
 
       <style>{`

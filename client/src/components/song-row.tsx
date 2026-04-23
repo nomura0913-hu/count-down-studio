@@ -305,12 +305,11 @@ export function SongRow({
       className={`flex items-center gap-1 py-1.5 px-2 transition-all duration-200 group`}
       style={{
         ...sortableStyle,
-        // Flat Claude-style: solid surface, no internal gradient, minimal shadow.
-        // Depth comes from canvas-vs-card contrast, not inner lighting.
-        background: isCurrent ? "#3a2a38" : "#2c2c2a",
+        // Flat Claude-style: solid surface, lifted above warm gray canvas.
+        background: isCurrent ? "#4a3a48" : "#363634",
         borderRadius: "10px",
         marginBottom: "8px",
-        border: isCurrent ? "1px solid #c186c8" : "1px solid #3a3a35",
+        border: isCurrent ? "1px solid #c186c8" : "1px solid #46463f",
         boxShadow: isCurrent
           ? "0 0 0 1px rgba(193,134,200,0.25)"
           : "none",

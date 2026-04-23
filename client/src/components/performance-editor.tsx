@@ -852,7 +852,7 @@ export function PerformanceEditor({
           paddingRight: 320,
         }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-end gap-3">
           <button
             type="button"
             onClick={toggleEventInfo}

@@ -606,10 +606,9 @@ export function PerformanceEditor({
       <div
         className="shrink-0 flex items-center px-4 w-full"
         style={{
-          background: "linear-gradient(180deg, #2e2e2b 0%, #1e1e1c 100%)",
+          background: "#1a1a18",
           height: 56,
-          borderBottom: "1px solid rgba(193,134,200,0.3)",
-          boxShadow: "0 1px 0 rgba(255,255,255,0.06) inset, 0 4px 16px rgba(0,0,0,0.5)",
+          borderBottom: "1px solid rgba(193,134,200,0.25)",
         }}
       >
         <button
@@ -652,9 +651,8 @@ export function PerformanceEditor({
       <div
         className="shrink-0 w-full px-4 pt-2 pb-3"
         style={{
-          background: "linear-gradient(180deg, #282826 0%, #1c1c1a 100%)",
-          borderBottom: "1px solid #3a3a35",
-          boxShadow: "0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 8px rgba(0,0,0,0.35)",
+          background: "#141412",
+          borderBottom: "1px solid #2a2a28",
         }}
       >
         <div className="flex items-center gap-3 mb-1.5">

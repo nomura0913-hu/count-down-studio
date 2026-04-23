@@ -879,12 +879,14 @@ export function PerformanceEditor({
           </div>
         </div>
 
-        {/* Control bar — warm gray with subtle top border */}
+        {/* Control bar — warm gray with subtle top border.
+            Fixed minHeight so preview above doesn't jump when Pause/Stop buttons toggle in. */}
         <div
           className="flex flex-wrap items-center justify-center gap-2 py-3 px-4 w-full shrink-0"
           style={{
             background: "#1a1918",
             marginTop: "14px",
+            minHeight: 148,
           }}
           data-testid="editor-control-bar"
         >

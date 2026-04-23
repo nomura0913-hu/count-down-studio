@@ -22,14 +22,14 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
       style={{ background: "transparent" }}
       data-testid="mode-tab-bar"
     >
-      {/* SET LIST pill — surface layer (#323230) so it pops against #2e2e2b panel strip */}
+      {/* SET LIST pill — surface layer (#1a1a18) so it pops against #141411 panel strip */}
       <button
         className="flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold tracking-[0.12em] uppercase transition-colors duration-150"
         style={{
           fontFamily: UI_FONT,
-          background: !outputOpen ? "#c186c8" : "#323230",
+          background: !outputOpen ? "#c186c8" : "#1a1a18",
           color:      !outputOpen ? "#0a0a08" : "#a8a8a0",
-          border:     !outputOpen ? "1px solid #c186c8" : "1px solid #46463f",
+          border:     !outputOpen ? "1px solid #c186c8" : "1px solid #2a2a24",
         }}
         onClick={onOutputOff}
         data-testid="tab-setlist"
@@ -41,8 +41,8 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
       <div
         className="flex items-center rounded-full"
         style={{
-          background: "#323230",
-          border: "1px solid #46463f",
+          background: "#1a1a18",
+          border: "1px solid #2a2a24",
         }}
       >
         <div
@@ -80,7 +80,7 @@ export function ModeTabBar({ activeMode, outputOpen, outputFullscreen, onOutputO
             className="px-3 py-1.5 rounded-full text-[10px] font-bold tracking-[0.14em] uppercase transition-colors duration-150"
             style={{
               fontFamily: MONO_FONT,
-              background: !outputOpen ? "#46463f" : "transparent",
+              background: !outputOpen ? "#2a2a24" : "transparent",
               color:      !outputOpen ? "#e8e8e2" : "#76766f",
             }}
             onClick={onOutputOff}

@@ -937,25 +937,7 @@ export function PerformanceEditor({
               data-testid="editor-input-show-time"
             />
           </div>
-          {/* SAVE + IMPORT buttons */}
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-1.5 px-4 h-11 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
-            style={{ fontFamily: HEADER_FONT, color: "#a8a8a0", background: "#1c1b19", border: "1px solid #2c2a27" }}
-            data-testid="editor-button-save-top"
-            title="Save setlist"
-          >
-            <Download className="w-3.5 h-3.5" /> Save
-          </button>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-4 h-11 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 shrink-0"
-            style={{ fontFamily: HEADER_FONT, color: "#a8a8a0", background: "#1c1b19", border: "1px solid #2c2a27" }}
-            data-testid="editor-button-import-top"
-            title="Import setlist"
-          >
-            <Upload className="w-3.5 h-3.5" /> Import
-          </button>
+          {/* SAVE / IMPORT lives in SET LIST mode only — removed from SHOW mode header. */}
           <input
             ref={fileInputRef}
             type="file"

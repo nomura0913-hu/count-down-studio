@@ -606,9 +606,8 @@ export function PerformanceEditor({
       <div
         className="shrink-0 flex items-center px-4 w-full"
         style={{
-          background: "#1a1a18",
+          background: "#262624",
           height: 56,
-          borderBottom: "1px solid rgba(193,134,200,0.25)",
         }}
       >
         <button
@@ -652,7 +651,6 @@ export function PerformanceEditor({
         className="shrink-0 w-full px-4 pt-2 pb-3"
         style={{
           background: "#262624",
-          borderBottom: "1px solid #3a3a35",
         }}
       >
         <div className="flex items-center gap-3 mb-1.5">

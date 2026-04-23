@@ -99,10 +99,9 @@ export const ACCENT_COLORS = {
 export const HEADER_FONT = "'Bebas Neue', Impact, 'Arial Narrow', sans-serif";
 export const TABLE_HEADER_STYLE = {
   color: "#a8a8a0",                  // --cds-text-2
-  borderBottom: "1px solid rgba(193,134,200,0.35)", // visible purple-tinted divider
+  borderBottom: "1px solid rgba(193,134,200,0.25)", // subtle purple-tinted divider only
   fontFamily: HEADER_FONT,
-  background: "linear-gradient(180deg, #2c2c2a 0%, #1c1c1a 100%)", // wide gradient — feels like a bar
+  background: "#262624",             // match canvas — no band effect
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
-  boxShadow: "0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 8px rgba(0,0,0,0.3)",
 };

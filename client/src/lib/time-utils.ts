@@ -70,22 +70,23 @@ export const MIDI_NOTES_BY_NAME: { noteName: string; notes: { value: number; lab
     return { noteName, notes };
   }).filter((g) => g.notes.length > 0);
 
-// Solid warm gray inputs (Claude-style). No transparency — strong edges.
+// Claude-style: inputs are "pressed into" the card surface (darker than card).
+// Gives clear visual hierarchy: card raised, input sunken.
 export const INPUT_STYLES = {
-  border: "1px solid #46463f",         // --cds-border
-  background: "#323230",                // --cds-surface
+  border: "1px solid #3a3a35",
+  background: "#1c1c1a",                // darker than card — reads as inset
   glowFocused: (accent: string) => {
     const match = accent.match(/rgba\(([^)]+)\)/);
     if (match) {
       const parts = match[1].split(",");
       if (parts.length === 4) {
-        const opacity = parseFloat(parts[3]) * 0.5;
-        return `0 0 10px rgba(${parts[0].trim()},${parts[1].trim()},${parts[2].trim()},${opacity.toFixed(2)})`;
+        const opacity = Math.min(parseFloat(parts[3]) * 0.8, 0.5);
+        return `0 0 0 2px rgba(${parts[0].trim()},${parts[1].trim()},${parts[2].trim()},${opacity.toFixed(2)}), inset 0 1px 2px rgba(0,0,0,0.4)`;
       }
     }
-    return `0 0 10px ${accent}`;
+    return `0 0 0 2px ${accent}`;
   },
-  borderBlur: "#46463f",
+  borderBlur: "#3a3a35",
 } as const;
 
 export const ACCENT_COLORS = {
@@ -98,10 +99,10 @@ export const ACCENT_COLORS = {
 export const HEADER_FONT = "'Bebas Neue', Impact, 'Arial Narrow', sans-serif";
 export const TABLE_HEADER_STYLE = {
   color: "#a8a8a0",                  // --cds-text-2
-  borderBottom: "1px solid rgba(193,134,200,0.22)", // subtle purple-tinted divider
+  borderBottom: "1px solid rgba(193,134,200,0.35)", // visible purple-tinted divider
   fontFamily: HEADER_FONT,
-  background: "linear-gradient(180deg, #323230 0%, #2a2a28 100%)", // Claude-style vertical depth
+  background: "linear-gradient(180deg, #2c2c2a 0%, #1c1c1a 100%)", // wide gradient — feels like a bar
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
-  boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset",
+  boxShadow: "0 1px 0 rgba(255,255,255,0.06) inset, 0 2px 8px rgba(0,0,0,0.3)",
 };

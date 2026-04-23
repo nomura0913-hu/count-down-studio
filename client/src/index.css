@@ -211,10 +211,11 @@
 
   body {
     @apply font-sans antialiased text-foreground;
-    background-color: #1f1f1d;
+    /* Deep warm near-black — cards will clearly lift off this */
+    background-color: #141412;
     background-image:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(193,134,200,0.07), transparent 65%),
-      radial-gradient(ellipse 90% 70% at 50% 100%, rgba(60,40,70,0.12), transparent 60%);
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(193,134,200,0.11), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(60,40,70,0.18), transparent 60%);
     background-attachment: fixed;
     min-height: 100vh;
   }

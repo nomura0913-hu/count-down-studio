@@ -305,17 +305,17 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group`}
       style={{
         ...sortableStyle,
-        // Claude-style: strong top-to-bottom gradient for depth.
-        // Top is lit, bottom sinks into shadow → clear elevation off the dark bg.
+        // Claude-style elevated card: top lit, bottom sinks into shadow.
+        // Wide lightness range (#40 → #22) for clear depth off the dark canvas.
         background: isCurrent
-          ? "linear-gradient(180deg, rgba(193,134,200,0.22) 0%, rgba(193,134,200,0.08) 100%), linear-gradient(180deg, #3a3a38 0%, #2c2c2a 100%)"
-          : "linear-gradient(180deg, #3c3c39 0%, #282826 100%)",
+          ? "linear-gradient(180deg, #4a3a48 0%, #2a1e28 100%)"
+          : "linear-gradient(180deg, #403f3a 0%, #22221f 100%)",
         borderRadius: "10px",
-        marginBottom: "6px",
+        marginBottom: "8px",
         border: isCurrent ? "1px solid #c186c8" : "1px solid #4a4a43",
         boxShadow: isCurrent
-          ? "0 0 0 1px rgba(193,134,200,0.25), 0 6px 18px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.07) inset"
-          : "0 3px 8px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.06) inset",
+          ? "0 0 0 1px rgba(193,134,200,0.4), 0 8px 22px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.1) inset"
+          : "0 4px 14px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.09) inset",
       }}
       data-testid={`${pid}-song-${song.id}`}
       data-song-row=""
@@ -331,8 +331,7 @@ export function SongRow({
         <GripVertical className="w-3.5 h-3.5" />
       </div>
 
-      {/* Category badge for MC/SP/EN — muted colored tint (distinguishable at a glance, not neon).
-          Width locked to 30px to match the song number box → input fields stay aligned. */}
+      {/* Category badge for MC/SP/EN — distinct colored tint with confident edges. */}
       {(isEncore || isMC || isEvent) ? (
         <span
           className="text-center shrink-0 flex items-center justify-center"
@@ -341,21 +340,22 @@ export function SongRow({
             fontSize: "10px",
             fontWeight: 900,
             letterSpacing: "0.05em",
-            color: isEncore ? "#9ec29a" : isMC ? "#9cc4d8" : "#d4b886",
+            color: isEncore ? "#b8d9b0" : isMC ? "#a8d4e8" : "#e8c890",
             background: isEncore
-              ? "rgba(106,138,102,0.2)"
+              ? "rgba(106,138,102,0.32)"
               : isMC
-              ? "rgba(106,150,184,0.2)"
-              : "rgba(184,149,88,0.2)",
+              ? "rgba(106,150,184,0.32)"
+              : "rgba(184,149,88,0.32)",
             border: isEncore
-              ? "1px solid rgba(106,138,102,0.45)"
+              ? "1px solid rgba(106,138,102,0.7)"
               : isMC
-              ? "1px solid rgba(106,150,184,0.45)"
-              : "1px solid rgba(184,149,88,0.45)",
+              ? "1px solid rgba(106,150,184,0.7)"
+              : "1px solid rgba(184,149,88,0.7)",
             borderRadius: "5px",
             padding: "3px 0",
             width: 30, minWidth: 30, maxWidth: 30,
             lineHeight: 1,
+            boxShadow: "0 1px 2px rgba(0,0,0,0.3)",
           }}
           data-testid={`text-song-index-${song.id}`}
         >
@@ -445,7 +445,7 @@ export function SongRow({
             onFocusField={() => { focusedFieldRef.current = "duration"; }}
             placeholder="0:00"
             testId={`${pid}-input-${isEncore ? "encore" : "mc"}-target-${song.id}`}
-            color={"#d4b055"}
+            color={"#e8b04a"}
           />
           <span className="shrink-0" style={{ width: "42px" }} />
           {!hideSubStartEnd && <span className="w-[60px] shrink-0" />}
@@ -487,7 +487,7 @@ export function SongRow({
             onFocusField={() => { if (!song.xTime) focusedFieldRef.current = "duration"; }}
             placeholder="0:00"
             testId={`${pid}-input-duration-${song.id}`}
-            color={song.xTime ? "#9ec29a" : "#d4b055"}
+            color={song.xTime ? "#b8d9b0" : "#e8b04a"}
             disabled={song.xTime}
           />
 
@@ -550,7 +550,7 @@ export function SongRow({
             onFocusField={() => { focusedFieldRef.current = "subTimer"; }}
             placeholder="着替"
             testId={`${pid}-input-subtimer-${song.id}`}
-            color={subTimer ? "#c99867" : undefined}
+            color={subTimer ? "#e0a070" : undefined}
           />
         </>
       )}
@@ -616,12 +616,12 @@ export function SongTableHeader({ showPlayButton = false, showMidiColumn = false
       <span className="flex-[0.8]" style={{ color: "#76766f" }}>NEXT TITLE</span>
       <span className="w-[60px] text-center" style={{ color: "#76766f" }}>START</span>
       <span className="w-[60px] text-center" style={{ color: "#76766f" }}>END</span>
-      <span className="w-[60px] text-center" style={{ color: "#76766f" }}>TIME</span>
-      <span className="w-[42px] text-center" style={{ color: "#76766f", fontSize: "13px" }}>X TIME</span>
+      <span className="w-[60px] text-center" style={{ color: "#b89550", fontWeight: 700 }}>TIME</span>
+      <span className="w-[42px] text-center" style={{ color: "#7aa878", fontSize: "13px", fontWeight: 700 }}>X TIME</span>
       {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替IN</span>}
       {!hideSubStartEnd && <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px" }}>着替OUT</span>}
-      <span className="w-[60px] text-center" style={{ color: "#76766f", fontSize: "12px", letterSpacing: "-0.05em" }}>着替時間</span>
-      {showMidiColumn && <span className="w-[72px] text-center" style={{ color: "#76766f" }}>MIDI</span>}
+      <span className="w-[60px] text-center" style={{ color: "#b8855a", fontSize: "12px", letterSpacing: "-0.05em", fontWeight: 700 }}>着替時間</span>
+      {showMidiColumn && <span className="w-[72px] text-center" style={{ color: "#a896c0", fontWeight: 700 }}>MIDI</span>}
       <span className="w-5" />
     </div>
   );
@@ -836,11 +836,12 @@ export function InsertionRow({ onAddSong, onAddSpecial, onAddMC, onAddEncore, di
       <button
         onClick={onAddSong}
         disabled={disabled}
-        className="flex-1 flex items-center justify-center gap-1 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
+        className="flex-1 flex items-center justify-center gap-1 py-1 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
         style={{
-          color: "#d8b8de",
-          background: "linear-gradient(180deg, rgba(193,134,200,0.15) 0%, rgba(193,134,200,0.06) 100%), #323230",
-          border: "1px dashed rgba(193,134,200,0.35)",
+          color: "#e8c8ee",
+          background: "linear-gradient(180deg, rgba(193,134,200,0.28) 0%, rgba(193,134,200,0.1) 100%), #2a2a28",
+          border: "1px solid rgba(193,134,200,0.55)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05) inset",
         }}
         data-testid={`${pfx}insert-song`}
       >
@@ -850,11 +851,12 @@ export function InsertionRow({ onAddSong, onAddSpecial, onAddMC, onAddEncore, di
       <button
         onClick={onAddSpecial}
         disabled={disabled}
-        className="flex-1 flex items-center justify-center gap-1 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
+        className="flex-1 flex items-center justify-center gap-1 py-1 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
         style={{
-          color: "#d4b886",
-          background: "linear-gradient(180deg, rgba(184,149,88,0.14) 0%, rgba(184,149,88,0.06) 100%), #323230",
-          border: "1px dashed rgba(184,149,88,0.35)",
+          color: "#e8c890",
+          background: "linear-gradient(180deg, rgba(184,149,88,0.28) 0%, rgba(184,149,88,0.1) 100%), #2a2a28",
+          border: "1px solid rgba(184,149,88,0.55)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05) inset",
         }}
         data-testid={`${pfx}insert-special`}
       >
@@ -864,11 +866,12 @@ export function InsertionRow({ onAddSong, onAddSpecial, onAddMC, onAddEncore, di
       <button
         onClick={onAddMC}
         disabled={disabled}
-        className="flex-1 flex items-center justify-center gap-1 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
+        className="flex-1 flex items-center justify-center gap-1 py-1 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
         style={{
-          color: "#9cc4d8",
-          background: "linear-gradient(180deg, rgba(106,150,184,0.14) 0%, rgba(106,150,184,0.06) 100%), #323230",
-          border: "1px dashed rgba(106,150,184,0.35)",
+          color: "#a8d4e8",
+          background: "linear-gradient(180deg, rgba(106,150,184,0.28) 0%, rgba(106,150,184,0.1) 100%), #2a2a28",
+          border: "1px solid rgba(106,150,184,0.55)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05) inset",
         }}
         data-testid={`${pfx}insert-mc`}
       >
@@ -878,11 +881,12 @@ export function InsertionRow({ onAddSong, onAddSpecial, onAddMC, onAddEncore, di
       <button
         onClick={onAddEncore}
         disabled={disabled}
-        className="flex-1 flex items-center justify-center gap-1 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
+        className="flex-1 flex items-center justify-center gap-1 py-1 rounded text-[10px] font-bold tracking-wider uppercase transition-all duration-200 disabled:opacity-30"
         style={{
-          color: "#9ec29a",
-          background: "linear-gradient(180deg, rgba(106,138,102,0.14) 0%, rgba(106,138,102,0.06) 100%), #323230",
-          border: "1px dashed rgba(106,138,102,0.35)",
+          color: "#b8d9b0",
+          background: "linear-gradient(180deg, rgba(106,138,102,0.28) 0%, rgba(106,138,102,0.1) 100%), #2a2a28",
+          border: "1px solid rgba(106,138,102,0.55)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05) inset",
         }}
         data-testid={`${pfx}insert-encore`}
       >

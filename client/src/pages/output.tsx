@@ -23,12 +23,14 @@ function ConcertSummaryDisplay({
   encoreSegments,
   startTime,
   endTime,
+  date,
 }: {
   totalMs: number;
   mcSegments: number[];
   encoreSegments: number[];
   startTime: string;
   endTime: string;
+  date: string;
 }) {
   // Cinematic-theater typography: elegant italic serif for titles, thin Archivo for numbers.
   const SERIF = "'Cormorant Garamond', 'Playfair Display', Georgia, serif";
@@ -127,13 +129,29 @@ function ConcertSummaryDisplay({
           fontSize: 88,
           fontWeight: 300,
           color: "rgba(232,176,74,0.95)",
-          marginBottom: 4,
+          marginBottom: 6,
           letterSpacing: "0.01em",
           lineHeight: 1,
         }}
       >
         End of Show
       </div>
+      {/* Date stamp — dated by when the concert started (handles past-midnight shows). */}
+      {date ? (
+        <div
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 16,
+            fontWeight: 300,
+            color: "rgba(232,176,74,0.7)",
+            marginBottom: 10,
+            letterSpacing: "0.35em",
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
+          {date}
+        </div>
+      ) : null}
       <div
         style={{
           fontFamily: SERIF,
@@ -433,6 +451,7 @@ export default function Output() {
           encoreSegments={state.summaryEncoreSegments || []}
           startTime={state.summaryStartTime || ""}
           endTime={state.summaryEndTime || ""}
+          date={state.summaryDate || ""}
         />
       ) : state.showEventInfo ? (
         <EventInfoDisplay

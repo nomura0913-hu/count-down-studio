@@ -32,6 +32,7 @@ export interface CountdownState {
   summaryEncoreSegments?: number[]; // each ENCORE (EN1, EN2, …) in milliseconds
   summaryStartTime?: string;
   summaryEndTime?: string;
+  summaryDate?: string; // e.g. "2026.04.24 (Thu)" — the show's date, printed on the closing card
 }
 
 const LS_KEY = "countdown-state";

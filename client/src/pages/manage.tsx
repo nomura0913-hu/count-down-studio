@@ -481,6 +481,15 @@ export default function Manage() {
       const d = new Date(ms);
       return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
     };
+    // Show date stamp — dated by the concert START (matters for shows that roll past midnight).
+    const dateFmt = (ms: number) => {
+      const d = new Date(ms);
+      const y = d.getFullYear();
+      const mo = String(d.getMonth() + 1).padStart(2, "0");
+      const da = String(d.getDate()).padStart(2, "0");
+      const dows = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      return `${y}.${mo}.${da} (${dows[d.getDay()]})`;
+    };
     setSummaryActive(true);
     broadcast({
       formattedTime: "--:--",
@@ -493,6 +502,7 @@ export default function Manage() {
       summaryEncoreSegments: finalEncoreSegments,
       summaryStartTime: fmt(startAt),
       summaryEndTime: fmt(now),
+      summaryDate: dateFmt(startAt),
     });
     toast({ title: "End of Show", description: "サマリーをサブディスプレイに表示中" });
   }, [mcSegments, encoreSegments, broadcast, countdown, toast]);
@@ -516,6 +526,7 @@ export default function Manage() {
       summaryEncoreSegments: [],
       summaryStartTime: "",
       summaryEndTime: "",
+      summaryDate: "",
     });
   }, [broadcast]);
 

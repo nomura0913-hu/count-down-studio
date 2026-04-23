@@ -846,7 +846,10 @@ export function PerformanceEditor({
         className="shrink-0 w-full px-5 py-4"
         style={{
           background: "#1a1918",
-          paddingRight: 260,
+          // Reserve enough room for the fixed ModeTabBar on the right (SET LIST / SHOW toggle).
+          // Previously 260; bumped after SAVE / IMPORT were removed so SHOW START no longer
+          // collided with the ModeTabBar.
+          paddingRight: 320,
         }}
       >
         <div className="flex items-center gap-3">

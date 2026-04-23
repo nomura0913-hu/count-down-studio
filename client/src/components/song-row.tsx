@@ -529,7 +529,7 @@ export function SongRow({
                     boxShadow: "0 0 0 1px rgba(106,138,102,0.3)",
                   }
                 : {
-                    background: "#0c0b0a",
+                    background: "#161513",
                     color: "#5a5a54",
                     border: "1px solid #242320",
                   }),

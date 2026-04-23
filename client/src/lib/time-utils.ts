@@ -74,7 +74,7 @@ export const MIDI_NOTES_BY_NAME: { noteName: string; notes: { value: number; lab
 // Gives clear visual hierarchy: card raised, input sunken.
 export const INPUT_STYLES = {
   border: "1px solid #242320",
-  background: "#0c0b0a",                // darker than card — reads as inset
+  background: "#161513",                // warm dark gray, still reads as inset vs #242320 card
   glowFocused: (accent: string) => {
     const match = accent.match(/rgba\(([^)]+)\)/);
     if (match) {

@@ -984,7 +984,7 @@ export default function Manage() {
 
   return (
     <div
-      className="h-full flex flex-col relative pt-2"
+      className="h-full flex flex-col relative pt-8"
       style={{
         fontFamily: UI_FONT,
         background: "#1a1918", // warm gray canvas; header strip (deep black) creates contrast

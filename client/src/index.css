@@ -210,7 +210,25 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
+    background-color: #262624;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(193,134,200,0.05), transparent 60%),
+      radial-gradient(ellipse 90% 70% at 50% 100%, rgba(60,40,70,0.08), transparent 60%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* Utility: Claude-style surface with subtle vertical gradient (feels alive, not flat) */
+  .cds-surface-grad {
+    background: linear-gradient(180deg, #363634 0%, #323230 100%);
+  }
+  .cds-surface-grad-hi {
+    background: linear-gradient(180deg, #3a3a37 0%, #353532 100%);
+  }
+  /* Subtle purple-tinted divider line (for section boundaries) */
+  .cds-divider-accent {
+    background: linear-gradient(90deg, transparent 0%, rgba(193,134,200,0.25) 30%, rgba(193,134,200,0.25) 70%, transparent 100%);
   }
 }
 

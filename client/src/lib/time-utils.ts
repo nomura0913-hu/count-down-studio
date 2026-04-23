@@ -98,9 +98,10 @@ export const ACCENT_COLORS = {
 export const HEADER_FONT = "'Bebas Neue', Impact, 'Arial Narrow', sans-serif";
 export const TABLE_HEADER_STYLE = {
   color: "#a8a8a0",                  // --cds-text-2
-  borderBottom: "1px solid #46463f", // --cds-border
+  borderBottom: "1px solid rgba(193,134,200,0.22)", // subtle purple-tinted divider
   fontFamily: HEADER_FONT,
-  background: "#2e2e2b",             // deep dark header strip for contrast
+  background: "linear-gradient(180deg, #323230 0%, #2a2a28 100%)", // Claude-style vertical depth
   letterSpacing: "0.12em",
   borderLeft: "3px solid transparent",
+  boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset",
 };

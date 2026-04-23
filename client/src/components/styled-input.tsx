@@ -113,7 +113,7 @@ export function TimeInput({
   color,
   disabled,
 }: TimeInputProps) {
-  const accentColor = ACCENT_COLORS.amber;
+  const accentColor = ACCENT_COLORS.fuchsia;
   const composingRef = useRef(false);
   const imeTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const [focused, setFocused] = useState(false);

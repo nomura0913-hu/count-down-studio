@@ -597,11 +597,20 @@ export function PerformanceEditor({
   const ctrlBtnClass = "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all duration-200";
 
   return (
-    <div className="flex flex-col h-full w-full" style={{ background: "#262624" }} data-testid="performance-editor">
+    <div className="flex flex-col h-full w-full" style={{
+      background: "#262624",
+      backgroundImage:
+        "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(193,134,200,0.06), transparent 70%), radial-gradient(ellipse 90% 70% at 50% 100%, rgba(60,40,70,0.09), transparent 60%)",
+    }} data-testid="performance-editor">
       {/* ===== FULL-WIDTH TOP STRIP: COUNT DOWN STUDIO logo + wordmark (click → home) ===== */}
       <div
         className="shrink-0 flex items-center px-4 w-full"
-        style={{ background: "#2e2e2b", height: 56 }}
+        style={{
+          background: "linear-gradient(180deg, #353532 0%, #2a2a28 100%)",
+          height: 56,
+          borderBottom: "1px solid rgba(193,134,200,0.15)",
+          boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset, 0 2px 8px rgba(0,0,0,0.25)",
+        }}
       >
         <button
           className="flex items-center gap-3 transition-opacity duration-150 hover:opacity-80"
@@ -642,21 +651,25 @@ export function PerformanceEditor({
           Spans entire width so the concert schedule lives at the top, unified across L/R. */}
       <div
         className="shrink-0 w-full px-4 pt-2 pb-3"
-        style={{ background: "#2e2e2b", borderBottom: "1px solid #46463f" }}
+        style={{
+          background: "linear-gradient(180deg, #2e2e2b 0%, #2a2a28 100%)",
+          borderBottom: "1px solid #46463f",
+          boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
+        }}
       >
         <div className="flex items-center gap-3 mb-1.5">
           <div className="w-9 shrink-0" />
           <span className="flex-1 text-[11px] uppercase font-bold"
-            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f" }}
+            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#c2a8c6" }}
           >Concert Title</span>
           <span className="text-[11px] uppercase font-bold text-center"
-            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "72px", minWidth: "72px" }}
+            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "72px", minWidth: "72px" }}
           >REHEARSAL</span>
           <span className="text-[11px] uppercase font-bold text-center"
-            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "72px", minWidth: "72px" }}
+            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "72px", minWidth: "72px" }}
           >DOOR OPEN</span>
           <span className="text-[11px] uppercase font-bold text-center"
-            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "72px", minWidth: "72px" }}
+            style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "72px", minWidth: "72px" }}
           >SHOW TIME</span>
         </div>
         <div className="flex items-center gap-3">

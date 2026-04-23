@@ -305,15 +305,17 @@ export function SongRow({
       className={`flex items-center gap-1 ${isCompactRow ? "py-0.5" : "py-1.5"} px-2 transition-all duration-200 group`}
       style={{
         ...sortableStyle,
-        // PROMPTER-style: card floats above canvas with surface color + clear border.
-        // Active: subtle accent tint + accent border (NOT left stripe—left stripe is too subtle).
-        background: isCurrent ? "rgba(193,134,200,0.12)" : "#323230", // surface (brighter than #262624 canvas)
+        // Claude-style: subtle top-to-bottom gradient creates depth (not flat).
+        // Active: rich purple tint gradient + accent border.
+        background: isCurrent
+          ? "linear-gradient(180deg, rgba(193,134,200,0.16) 0%, rgba(193,134,200,0.08) 100%), #323230"
+          : "linear-gradient(180deg, #363634 0%, #2e2e2c 100%)",
         borderRadius: "10px",
         marginBottom: "6px",
         border: isCurrent ? "1px solid #c186c8" : "1px solid #46463f",
         boxShadow: isCurrent
-          ? "0 0 0 1px rgba(193,134,200,0.15), 0 4px 12px rgba(0,0,0,0.25)"
-          : "0 1px 3px rgba(0,0,0,0.25)",
+          ? "0 0 0 1px rgba(193,134,200,0.18), 0 4px 12px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.04) inset"
+          : "0 1px 2px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.03) inset",
       }}
       data-testid={`${pid}-song-${song.id}`}
       data-song-row=""

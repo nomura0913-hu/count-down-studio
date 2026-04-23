@@ -1078,11 +1078,12 @@ export default function Manage() {
                 fontFamily: HEADER_FONT,
                 fontSize: "15px",
                 letterSpacing: "0.12em",
-                background: "#323230",
+                background: "linear-gradient(180deg, #3a3a37 0%, #323230 100%)",
                 border: "1px solid #46463f",
                 color: "#a8a8a0",
                 width: "96px",
                 height: "32px",
+                boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.2)",
               }}
               onClick={() => fileInputRef.current?.click()}
               data-testid="button-import-setlist"
@@ -1096,11 +1097,12 @@ export default function Manage() {
                 fontFamily: HEADER_FONT,
                 fontSize: "15px",
                 letterSpacing: "0.12em",
-                background: "#323230",
+                background: "linear-gradient(180deg, #3a3a37 0%, #323230 100%)",
                 border: "1px solid #46463f",
                 color: "#a8a8a0",
                 width: "96px",
                 height: "32px",
+                boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.2)",
               }}
               onClick={handleExport}
               disabled={!activeSetlist || sortedSongs.length === 0}
@@ -1117,11 +1119,12 @@ export default function Manage() {
                     fontFamily: HEADER_FONT,
                     fontSize: "15px",
                     letterSpacing: "0.12em",
-                    background: "#323230",
-                    border: "1px solid #46463f",
-                    color: "#c186c8",
+                    background: "linear-gradient(180deg, rgba(193,134,200,0.18) 0%, rgba(193,134,200,0.08) 100%), #323230",
+                    border: "1px solid rgba(193,134,200,0.35)",
+                    color: "#d8b8de",
                     width: "96px",
                     height: "32px",
+                    boxShadow: "0 1px 0 rgba(255,255,255,0.05) inset, 0 1px 2px rgba(0,0,0,0.2)",
                   }}
                   onClick={handleNewConcert}
                   data-testid="button-new-concert"
@@ -1135,11 +1138,12 @@ export default function Manage() {
                     fontFamily: HEADER_FONT,
                     fontSize: "15px",
                     letterSpacing: "0.12em",
-                    background: "#323230",
+                    background: "linear-gradient(180deg, #3a3a37 0%, #323230 100%)",
                     border: "1px solid #46463f",
                     color: "#8a6a6a",
                     width: "96px",
                     height: "32px",
+                    boxShadow: "0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.2)",
                   }}
                   onClick={handleDeleteConcert}
                   data-testid="button-delete-concert"
@@ -1182,17 +1186,17 @@ export default function Manage() {
               </button>
             </div>
 
-            {/* Label row - unified muted warm gray (PROMPTER style) */}
+            {/* Label row — main label accents with muted purple, secondary stay gray (Claude-style hierarchy) */}
             <div className="flex items-baseline gap-3 mb-3">
               <span
                 className="flex-1 min-w-0 text-[11px] uppercase leading-none font-bold"
-                style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f" }}
+                style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#c2a8c6" }}
               >
                 Concert Title
               </span>
-              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>REHEARSAL</span>
-              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>DOOR OPEN</span>
-              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#76766f", width: "90px", minWidth: "90px" }}>SHOW TIME</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "90px", minWidth: "90px" }}>REHEARSAL</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "90px", minWidth: "90px" }}>DOOR OPEN</span>
+              <span className="text-[11px] uppercase leading-none text-center whitespace-nowrap font-bold" style={{ fontFamily: UI_FONT, letterSpacing: "0.15em", color: "#8a8a82", width: "90px", minWidth: "90px" }}>SHOW TIME</span>
             </div>
 
             {/* Input row - all same height */}

@@ -61,9 +61,9 @@ function ConcertSummaryDisplay({
     return () => ro.disconnect();
   }, [updateScale]);
 
-  // Auto-shrink concert title so it fits the hero band on one line.
+  // Auto-shrink concert title (now displayed as a sub-hero under "End of Show").
   const titleLen = concertTitle?.length || 0;
-  const titleFontSize = titleLen > 30 ? 70 : titleLen > 22 ? 90 : titleLen > 14 ? 110 : 130;
+  const subtitleFontSize = titleLen > 40 ? 32 : titleLen > 28 ? 42 : titleLen > 18 ? 52 : 60;
 
   // Auto-shrink per-row number in breakdowns if there are many (cap at 5 typical,
   // handle up to 8 gracefully).
@@ -232,7 +232,7 @@ function ConcertSummaryDisplay({
             padding: "40px 80px",
           }}
         >
-          {/* ====== HERO BAND: Concert Title + End of Show / Date meta ====== */}
+          {/* ====== HERO BAND: END OF SHOW (grand) → Concert Title (sub) → Date ====== */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             {/* Tiny top accent line */}
             <div
@@ -240,73 +240,61 @@ function ConcertSummaryDisplay({
                 width: 120,
                 height: 1,
                 background: "linear-gradient(to right, transparent, rgba(232,176,74,0.5), transparent)",
-                marginBottom: 10,
+                marginBottom: 12,
               }}
             />
-            {/* Concert Title — grand italic serif */}
+            {/* "End of Show" — grand italic serif, main hero */}
             <div
               style={{
                 fontFamily: SERIF,
                 fontStyle: "italic",
-                fontSize: titleFontSize,
+                fontSize: 160,
                 fontWeight: 400,
                 color: "#f2e3c2",
-                letterSpacing: "0.01em",
-                lineHeight: 1,
+                letterSpacing: "0.005em",
+                lineHeight: 0.95,
                 textAlign: "center",
+                textShadow: "0 0 80px rgba(232,176,74,0.3)",
+              }}
+            >
+              End of Show
+            </div>
+            {/* Concert Title — sub-hero, uppercase display letterspaced for program-book feel */}
+            <div
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: subtitleFontSize,
+                fontWeight: 300,
+                color: "rgba(232,176,74,0.85)",
+                letterSpacing: "0.15em",
+                textAlign: "center",
+                marginTop: 18,
                 maxWidth: 1600,
-                textShadow: "0 0 60px rgba(232,176,74,0.25)",
                 padding: "0 40px",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
             >
               {concertTitle || "Untitled Concert"}
             </div>
-            {/* meta row: End of Show · Date */}
-            <div style={{ display: "flex", alignItems: "center", gap: 24, marginTop: 14 }}>
+            {/* Date — small amber, tabular */}
+            {date ? (
               <div
                 style={{
                   fontFamily: DISPLAY,
-                  letterSpacing: "0.55em",
-                  fontSize: 20,
-                  fontWeight: 500,
-                  color: "rgba(232,176,74,0.9)",
-                  textTransform: "uppercase",
+                  fontSize: 22,
+                  fontWeight: 300,
+                  color: "rgba(232,176,74,0.6)",
+                  letterSpacing: "0.35em",
+                  fontVariantNumeric: "tabular-nums",
+                  marginTop: 12,
                 }}
               >
-                End of Show
+                {date}
               </div>
-              {date ? (
-                <>
-                  <div style={{ width: 6, height: 6, background: "rgba(232,176,74,0.4)", borderRadius: "50%" }} />
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: 20,
-                      fontWeight: 300,
-                      color: "rgba(232,176,74,0.75)",
-                      letterSpacing: "0.3em",
-                      fontVariantNumeric: "tabular-nums",
-                    }}
-                  >
-                    {date}
-                  </div>
-                </>
-              ) : null}
-            </div>
-            {/* subtitle */}
-            <div
-              style={{
-                fontFamily: SERIF,
-                fontStyle: "italic",
-                fontSize: 22,
-                fontWeight: 300,
-                color: "rgba(168,168,160,0.55)",
-                marginTop: 6,
-                letterSpacing: "0.18em",
-              }}
-            >
-              ——  thank you for tonight  ——
-            </div>
+            ) : null}
           </div>
 
           {/* ====== TOTAL TIME — hero stat ====== */}

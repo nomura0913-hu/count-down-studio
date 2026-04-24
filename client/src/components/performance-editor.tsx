@@ -152,42 +152,79 @@ function LiveMidiBigDisplay({
   onToggle,
   onRequestFullscreen,
   outputOpen,
+  outputFullscreen,
 }: {
   lastMessage: MidiMessage | null;
   enabled: boolean;
   onToggle: () => void;
   onRequestFullscreen?: () => void;
   outputOpen?: boolean;
+  outputFullscreen?: boolean;
 }) {
+  // Three visual states:
+  //   disabled  — sub window not open
+  //   idle      — sub open but not yet fullscreen (neutral, "press me")
+  //   active    — actually in fullscreen (amber glow)
+  const fsState: "disabled" | "idle" | "active" = !outputOpen
+    ? "disabled"
+    : outputFullscreen
+    ? "active"
+    : "idle";
+  const fsStyle =
+    fsState === "active"
+      ? {
+          border: "1px solid rgba(232,176,74,0.6)",
+          background: "rgba(232,176,74,0.15)",
+          color: "#f0c77a",
+          opacity: 1,
+          cursor: "pointer" as const,
+        }
+      : fsState === "idle"
+      ? {
+          border: "1px solid #2c2a27",
+          background: "#1c1b19",
+          color: "#a8a8a0",
+          opacity: 1,
+          cursor: "pointer" as const,
+        }
+      : {
+          border: "1px solid #2c2a27",
+          background: "#1c1b19",
+          color: "#5a5a54",
+          opacity: 0.5,
+          cursor: "not-allowed" as const,
+        };
   return (
     <div
       className="flex items-stretch w-full gap-2"
       style={{ minHeight: 84 }}
       data-testid="live-midi-big-display"
     >
-      {/* LEFT-LEFT: DISPLAY fullscreen trigger. Sends fullscreen request to the sub-window
-          so the director never has to click on the sub-display itself. */}
+      {/* LEFT-LEFT: DISPLAY fullscreen trigger. Button only glows amber when the
+          sub-display is actually in fullscreen — not just when the window is open. */}
       <button
         onClick={() => onRequestFullscreen?.()}
-        disabled={!outputOpen}
+        disabled={fsState === "disabled"}
         className="flex flex-col items-center justify-center transition-colors duration-150"
         style={{
           flex: "0 0 18%",
           borderRadius: 3,
-          border: outputOpen ? "1px solid rgba(193,134,200,0.55)" : "1px solid #2c2a27",
-          background: outputOpen ? "rgba(193,134,200,0.14)" : "#1c1b19",
-          color: outputOpen ? "#d8b8de" : "#5a5a54",
           fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
           letterSpacing: "0.2em",
-          cursor: outputOpen ? "pointer" : "not-allowed",
-          opacity: outputOpen ? 1 : 0.5,
+          ...fsStyle,
         }}
         data-testid="button-display-fullscreen"
-        title={outputOpen ? "サブディスプレイをフルスクリーン化" : "先にSHOW ONでサブウィンドウを開いてください"}
+        title={
+          fsState === "disabled"
+            ? "先にSHOW ONでサブウィンドウを開いてください"
+            : fsState === "active"
+            ? "サブディスプレイはフルスクリーン中 (もう一度押すと再要求)"
+            : "サブディスプレイをフルスクリーンにする"
+        }
       >
         <span style={{ fontSize: 13, fontWeight: 700, opacity: 0.7, marginBottom: 4 }}>DISPLAY</span>
         <span style={{ fontSize: 26, fontWeight: 900, lineHeight: 1 }}>
-          FULL
+          {fsState === "active" ? "ON" : "FULL"}
         </span>
       </button>
 
@@ -336,7 +373,7 @@ export function PerformanceEditor({
   const updateSetlist = useUpdateSetlist();
   const updateSong = useUpdateSong();
   const { toast } = useToast();
-  const { broadcast, outputOpen, requestOutputFullscreen } = useAppMode();
+  const { broadcast, outputOpen, outputFullscreen, requestOutputFullscreen } = useAppMode();
   const [, navigate] = useLocation();
   const [showingEventInfo, setShowingEventInfo] = useState(false);
   const eventInfoIntervalRef = useRef<ReturnType<typeof setInterval>>();
@@ -1147,6 +1184,7 @@ export function PerformanceEditor({
             onToggle={() => onToggleMidi?.()}
             onRequestFullscreen={() => requestOutputFullscreen()}
             outputOpen={outputOpen}
+            outputFullscreen={outputFullscreen}
           />
           {/* Total time elapsed + current wall clock */}
           <TotalTimeAndClockDisplay countdownStatus={countdownStatus} />

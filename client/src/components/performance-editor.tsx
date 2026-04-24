@@ -207,7 +207,8 @@ function LiveMidiBigDisplay({
         disabled={fsState === "disabled"}
         className="flex flex-col items-center justify-center transition-colors duration-150"
         style={{
-          flex: "0 0 18%",
+          flex: "1 1 0",
+          minWidth: 0,
           borderRadius: 3,
           fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
           letterSpacing: "0.2em",
@@ -233,7 +234,8 @@ function LiveMidiBigDisplay({
         onClick={onToggle}
         className="flex flex-col items-center justify-center transition-colors duration-150"
         style={{
-          flex: "0 0 28%",
+          flex: "1 1 0",
+          minWidth: 0,
           borderRadius: 3,
           border: enabled ? "1px solid rgba(193,134,200,0.55)" : "1px solid #2c2a27",
           background: enabled ? "rgba(193,134,200,0.14)" : "#1c1b19",
@@ -253,8 +255,10 @@ function LiveMidiBigDisplay({
 
       {/* RIGHT: Live signal display */}
       <div
-        className="flex items-center justify-center flex-1"
+        className="flex items-center justify-center"
         style={{
+          flex: "1 1 0",
+          minWidth: 0,
           borderRadius: 3,
           border: "1px solid #242320",
           background: "#201e1c",

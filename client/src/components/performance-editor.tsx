@@ -150,10 +150,14 @@ function LiveMidiBigDisplay({
   lastMessage,
   enabled,
   onToggle,
+  onRequestFullscreen,
+  outputOpen,
 }: {
   lastMessage: MidiMessage | null;
   enabled: boolean;
   onToggle: () => void;
+  onRequestFullscreen?: () => void;
+  outputOpen?: boolean;
 }) {
   return (
     <div
@@ -161,12 +165,38 @@ function LiveMidiBigDisplay({
       style={{ minHeight: 84 }}
       data-testid="live-midi-big-display"
     >
+      {/* LEFT-LEFT: DISPLAY fullscreen trigger. Sends fullscreen request to the sub-window
+          so the director never has to click on the sub-display itself. */}
+      <button
+        onClick={() => onRequestFullscreen?.()}
+        disabled={!outputOpen}
+        className="flex flex-col items-center justify-center transition-colors duration-150"
+        style={{
+          flex: "0 0 18%",
+          borderRadius: 3,
+          border: outputOpen ? "1px solid rgba(193,134,200,0.55)" : "1px solid #2c2a27",
+          background: outputOpen ? "rgba(193,134,200,0.14)" : "#1c1b19",
+          color: outputOpen ? "#d8b8de" : "#5a5a54",
+          fontFamily: "'Bebas Neue', Impact, 'Arial Narrow', sans-serif",
+          letterSpacing: "0.2em",
+          cursor: outputOpen ? "pointer" : "not-allowed",
+          opacity: outputOpen ? 1 : 0.5,
+        }}
+        data-testid="button-display-fullscreen"
+        title={outputOpen ? "サブディスプレイをフルスクリーン化" : "先にSHOW ONでサブウィンドウを開いてください"}
+      >
+        <span style={{ fontSize: 13, fontWeight: 700, opacity: 0.7, marginBottom: 4 }}>DISPLAY</span>
+        <span style={{ fontSize: 26, fontWeight: 900, lineHeight: 1 }}>
+          FULL
+        </span>
+      </button>
+
       {/* LEFT: MIDI ON/OFF toggle */}
       <button
         onClick={onToggle}
         className="flex flex-col items-center justify-center transition-colors duration-150"
         style={{
-          flex: "0 0 40%",
+          flex: "0 0 28%",
           borderRadius: 3,
           border: enabled ? "1px solid rgba(193,134,200,0.55)" : "1px solid #2c2a27",
           background: enabled ? "rgba(193,134,200,0.14)" : "#1c1b19",
@@ -306,7 +336,7 @@ export function PerformanceEditor({
   const updateSetlist = useUpdateSetlist();
   const updateSong = useUpdateSong();
   const { toast } = useToast();
-  const { broadcast, outputOpen } = useAppMode();
+  const { broadcast, outputOpen, requestOutputFullscreen } = useAppMode();
   const [, navigate] = useLocation();
   const [showingEventInfo, setShowingEventInfo] = useState(false);
   const eventInfoIntervalRef = useRef<ReturnType<typeof setInterval>>();
@@ -1110,11 +1140,13 @@ export function PerformanceEditor({
               <RotateCcw className="w-3.5 h-3.5" /> Reset
             </button>
           )}
-          {/* Live MIDI signal display with ON/OFF toggle */}
+          {/* Live MIDI signal display with ON/OFF toggle + DISPLAY FULL button */}
           <LiveMidiBigDisplay
             lastMessage={lastMidiMessage ?? null}
             enabled={midiEnabled}
             onToggle={() => onToggleMidi?.()}
+            onRequestFullscreen={() => requestOutputFullscreen()}
+            outputOpen={outputOpen}
           />
           {/* Total time elapsed + current wall clock */}
           <TotalTimeAndClockDisplay countdownStatus={countdownStatus} />

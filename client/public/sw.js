@@ -1,11 +1,32 @@
-const CACHE_NAME = "songcountdown-v26";
+// COUNT DOWN STUDIO Service Worker
+// Lives at <BASE_PATH>sw.js. On GitHub Pages BASE_PATH is "/count-down-studio/".
+// We derive BASE_PATH from self.location so the same file works for local dev
+// (BASE_PATH = "/") and any other future deployment subpath.
+
+const CACHE_NAME = "songcountdown-v27";
+const BASE_PATH = self.location.pathname.replace(/sw\.js$/, "");
 
 const PRECACHE_URLS = [
-  "/",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png",
+  BASE_PATH,
+  BASE_PATH + "manifest.json",
+  BASE_PATH + "icon-192.png",
+  BASE_PATH + "icon-512.png",
 ];
+
+const ASSETS_PREFIX = BASE_PATH + "assets/";
+
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+const ASSET_URL_REGEX = new RegExp(
+  '(?:src|href)="(' + escapeRegExp(ASSETS_PREFIX) + '[^"]+)"',
+  "g",
+);
+const CHUNK_IMPORT_REGEX = new RegExp(
+  'import\\(["\'](' + escapeRegExp(ASSETS_PREFIX) + '[^"\']+)["\']\\)',
+  "g",
+);
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -31,12 +52,12 @@ self.addEventListener("activate", (event) => {
       .then(() => {
         return caches.open(CACHE_NAME).then(async (cache) => {
           try {
-            const response = await fetch("/", { cache: "no-store" });
-            cache.put("/", response.clone());
+            const response = await fetch(BASE_PATH, { cache: "no-store" });
+            cache.put(BASE_PATH, response.clone());
             const html = await response.text();
 
             const assetUrls = new Set();
-            const srcMatches = html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g);
+            const srcMatches = html.matchAll(ASSET_URL_REGEX);
             for (const m of srcMatches) {
               assetUrls.add(m[1]);
             }
@@ -58,7 +79,7 @@ self.addEventListener("activate", (event) => {
                 const cached = await cache.match(url);
                 if (!cached) continue;
                 const jsText = await cached.clone().text();
-                const chunkMatches = jsText.matchAll(/import\(["'](\/assets\/[^"']+)["']\)/g);
+                const chunkMatches = jsText.matchAll(CHUNK_IMPORT_REGEX);
                 for (const m of chunkMatches) {
                   const chunkUrl = m[1];
                   const chunkExisting = await cache.match(chunkUrl);
@@ -102,12 +123,12 @@ self.addEventListener("fetch", (event) => {
         .then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put("/", clone));
+            caches.open(CACHE_NAME).then((cache) => cache.put(BASE_PATH, clone));
           }
           return response;
         })
         .catch(() => {
-          return caches.match("/").then((cached) => {
+          return caches.match(BASE_PATH).then((cached) => {
             if (cached) return cached;
             return new Response("Offline - please connect to the internet and reload", {
               status: 503,
@@ -123,7 +144,7 @@ self.addEventListener("fetch", (event) => {
     ? url.pathname + url.search
     : request.url;
 
-  if (url.pathname.startsWith("/assets/")) {
+  if (url.pathname.startsWith(ASSETS_PREFIX)) {
     event.respondWith(
       caches.match(cacheKey).then((cached) => {
         if (cached) return cached;

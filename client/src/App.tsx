@@ -15,12 +15,13 @@ import NotFound from "@/pages/not-found";
 const INSTANCE_CHANNEL = "songcountdown-instance";
 const INSTANCE_LS_KEY = "songcountdown-instance-active";
 
-function useDuplicateGuard() {
+function useDuplicateGuard(enabled: boolean = true) {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const instanceId = useRef(Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
 
   useEffect(() => {
+    if (!enabled) return;
     let bc: BroadcastChannel | null = null;
 
     const markActive = () => {
@@ -82,7 +83,7 @@ function useDuplicateGuard() {
       window.removeEventListener("storage", handleStorage);
       try { bc?.close(); } catch (_) {}
     };
-  }, []);
+  }, [enabled]);
 
   const takeOver = useCallback(() => {
     setIsDuplicate(false);
@@ -97,7 +98,7 @@ function useDuplicateGuard() {
     } catch (_) {}
   }, []);
 
-  return { isDuplicate: isDuplicate && !dismissed, takeOver };
+  return { isDuplicate: enabled && isDuplicate && !dismissed, takeOver };
 }
 
 function AppHeader() {
@@ -200,7 +201,7 @@ function AppLayout() {
   const [location] = useLocation();
   const isOutput = location === "/output";
   const isHome = location === "/";
-  const { isDuplicate, takeOver } = useDuplicateGuard();
+  const { isDuplicate, takeOver } = useDuplicateGuard(!isOutput && !isHome);
 
   if (isOutput || isHome) {
     return <Router />;

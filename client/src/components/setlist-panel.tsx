@@ -747,6 +747,9 @@ export function SetlistPanel({
       isEvent: false,
       xTime: false,
       isMC: false,
+      isEncore: false,
+      subTimerSeconds: 0,
+      subTimerTimeRange: null,
     }, {
       onSuccess: (newSong) => {
         if (newSong?.id) {
@@ -772,6 +775,9 @@ export function SetlistPanel({
       isEvent: true,
       xTime: false,
       isMC: false,
+      isEncore: false,
+      subTimerSeconds: 0,
+      subTimerTimeRange: null,
     }, {
       onSuccess: (newSong) => {
         if (newSong?.id) {
@@ -797,6 +803,9 @@ export function SetlistPanel({
       isEvent: false,
       xTime: false,
       isMC: true,
+      isEncore: false,
+      subTimerSeconds: 0,
+      subTimerTimeRange: null,
     }, {
       onSuccess: (newSong) => {
         if (newSong?.id) {

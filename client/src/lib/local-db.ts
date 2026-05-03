@@ -225,27 +225,38 @@ export const localDB = {
   async replaceSetlistSongs(setlistId: number, newName: string, songs: Omit<LocalSong, "id" | "setlistId">[], extra?: { doorOpen?: string | null; showTime?: string | null; rehearsal?: string | null }): Promise<void> {
     const db = await getDB();
 
-    const delTx = db.transaction("songs", "readwrite");
-    const index = delTx.store.index("bySetlist");
-    let cursor = await index.openCursor(setlistId);
+    // Atomic replace: delete existing songs + update setlist metadata + add new songs
+    // in ONE transaction over both stores. If anything throws, IndexedDB rolls back
+    // automatically — no half-state where the setlist exists but its songs are gone.
+    const tx = db.transaction(["songs", "setlists"], "readwrite");
+    const songsStore = tx.objectStore("songs");
+    const setlistsStore = tx.objectStore("setlists");
+
+    // 1) Delete existing songs for this setlist
+    const idx = songsStore.index("bySetlist");
+    let cursor = await idx.openCursor(setlistId);
     while (cursor) {
       await cursor.delete();
       cursor = await cursor.continue();
     }
-    await delTx.done;
 
-    const setlistUpdate: Partial<LocalSetlist> = { name: newName };
-    if (extra) {
-      if (extra.doorOpen !== undefined) setlistUpdate.doorOpen = extra.doorOpen ?? null;
-      if (extra.showTime !== undefined) setlistUpdate.showTime = extra.showTime ?? null;
-      if (extra.rehearsal !== undefined) setlistUpdate.rehearsal = extra.rehearsal ?? null;
+    // 2) Update setlist metadata (name + optional door/show/rehearsal)
+    const existing = await setlistsStore.get(setlistId);
+    if (existing) {
+      const updated: LocalSetlist = {
+        ...existing,
+        name: newName,
+        doorOpen: extra && extra.doorOpen !== undefined ? (extra.doorOpen ?? null) : existing.doorOpen,
+        showTime: extra && extra.showTime !== undefined ? (extra.showTime ?? null) : existing.showTime,
+        rehearsal: extra && extra.rehearsal !== undefined ? (extra.rehearsal ?? null) : existing.rehearsal,
+      };
+      await setlistsStore.put(updated);
     }
-    await this.updateSetlist(setlistId, setlistUpdate);
 
-    const addTx = db.transaction("songs", "readwrite");
+    // 3) Add new songs
     for (let i = 0; i < songs.length; i++) {
       const s = songs[i];
-      await addTx.store.add({
+      await songsStore.add({
         setlistId,
         title: s.title ?? "",
         nextTitle: s.nextTitle ?? null,
@@ -264,6 +275,7 @@ export const localDB = {
         subTimerTimeRange: s.subTimerTimeRange ?? null,
       });
     }
-    await addTx.done;
+
+    await tx.done;
   },
 };

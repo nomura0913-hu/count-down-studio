@@ -28,6 +28,12 @@ export function useCountdown(): UseCountdownReturn {
   const remainingAtPauseRef = useRef<number>(0);
   const elapsedAtPauseRef = useRef<number>(0);
   const isCountUpRef = useRef(false);
+  // Mirror status into a ref so pause/resume see the latest value even if the
+  // callback hasn't re-created yet (fast foot-pedal taps in production).
+  const statusRef = useRef<CountdownStatus>("idle");
+  useEffect(() => {
+    statusRef.current = status;
+  }, [status]);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -82,7 +88,7 @@ export function useCountdown(): UseCountdownReturn {
   }, [clearTimer]);
 
   const pause = useCallback(() => {
-    if (status !== "running") return;
+    if (statusRef.current !== "running") return;
     clearTimer();
     const elapsed = (Date.now() - startTimeRef.current) / 1000;
     if (isCountUpRef.current) {
@@ -95,11 +101,13 @@ export function useCountdown(): UseCountdownReturn {
       elapsedAtPauseRef.current = elapsedAtPauseRef.current + elapsed;
       setElapsedSeconds(elapsedAtPauseRef.current);
     }
+    statusRef.current = "paused";
     setStatus("paused");
-  }, [status, clearTimer]);
+  }, [clearTimer]);
 
   const resume = useCallback(() => {
-    if (status !== "paused") return;
+    if (statusRef.current !== "paused") return;
+    statusRef.current = "running";
     setStatus("running");
     startTimeRef.current = Date.now();
 
@@ -115,11 +123,12 @@ export function useCountdown(): UseCountdownReturn {
         setElapsedSeconds(elapsedAtPauseRef.current + elapsed);
         if (remaining <= 0) {
           clearTimer();
+          statusRef.current = "finished";
           setStatus("finished");
         }
       }
     }, 200);
-  }, [status, clearTimer]);
+  }, [clearTimer]);
 
   const stop = useCallback(() => {
     clearTimer();

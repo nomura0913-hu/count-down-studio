@@ -74,10 +74,16 @@ export const undoManager = {
       if (!setlistExists) {
         await localDB.restoreSetlist(snapshot.setlist);
       } else {
+        // Restore ALL setlist fields, not just name/description/isActive.
+        // Otherwise undo of a song change wipes any door/show/rehearsal change
+        // the user made between snapshots.
         await localDB.updateSetlist(snapshot.setlistId, {
           name: snapshot.setlist.name,
           description: snapshot.setlist.description,
           isActive: snapshot.setlist.isActive,
+          doorOpen: snapshot.setlist.doorOpen,
+          showTime: snapshot.setlist.showTime,
+          rehearsal: snapshot.setlist.rehearsal,
         });
       }
 

@@ -34,6 +34,8 @@ function getOrCreateInstanceId(): string {
 function useDuplicateGuard(enabled: boolean = true) {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  // 他タブが本番進行中で切り替えを拒否された状態（busy 応答を受けた）
+  const [blockedByShow, setBlockedByShow] = useState(false);
   const instanceId = useRef(getOrCreateInstanceId());
 
   // A live show is sacred: while a countdown is in progress on THIS tab
@@ -41,7 +43,11 @@ function useDuplicateGuard(enabled: boolean = true) {
   // replace this screen with the DuplicateWarning — unmounting /manage
   // would wipe the remaining time and freeze the projector output.
   // The NEW tab still sees its own warning via checkExisting().
-  const showInProgress = () => !!(window as any).__cdsActive;
+  // __cdsOverlayActive も含める: END SHOW サマリー / EVENT INFO 表示中は
+  // status が idle なので __cdsActive だけでは守れない（客に見えている最中に
+  // 別タブ起動で /manage がアンマウントされ、公演集計が全消えする穴があった）。
+  const showInProgress = () =>
+    !!((window as any).__cdsActive || (window as any).__cdsOverlayActive);
 
   useEffect(() => {
     if (!enabled) return;
@@ -73,17 +79,35 @@ function useDuplicateGuard(enabled: boolean = true) {
       bc = new BroadcastChannel(INSTANCE_CHANNEL);
       bc.postMessage({ type: "ping", id: instanceId.current });
       bc.addEventListener("message", (e) => {
-        if (showInProgress()) return;
-        if (e.data?.type === "ping" && e.data.id !== instanceId.current) {
+        const msg = e.data;
+        if (!msg || msg.id === instanceId.current) return;
+
+        if (showInProgress()) {
+          // ショー進行中はこの画面を絶対に譲らない。ただし黙殺すると相手タブは
+          // 「take-over できた」と誤解して同時稼働（＝出力の取り合い）になるため、
+          // busy を返して相手を警告画面に留める。
+          if (msg.type === "ping" || msg.type === "take-over") {
+            try { bc?.postMessage({ type: "busy", id: instanceId.current }); } catch (_) {}
+          }
+          return;
+        }
+
+        if (msg.type === "ping") {
           setIsDuplicate(true);
         }
         // D8: "pong" 受信は送り手が存在しない死にコードだったため削除
-        if (e.data?.type === "take-over" && e.data.id !== instanceId.current) {
+        if (msg.type === "take-over") {
           setIsDuplicate(true);
           // C6: 別タブが「こちらで使用する」を明示的に押した＝制御が移った。
           // 過去に自分が take-over していても警告を再表示する（恒久 dismiss は
           // 2画面同時稼働の温床だった）。
           setDismissed(false);
+        }
+        if (msg.type === "busy") {
+          // 相手が本番進行中。こちらは操作できない状態に戻す。
+          setIsDuplicate(true);
+          setDismissed(false);
+          setBlockedByShow(true);
         }
       });
     } catch (_) {}
@@ -146,7 +170,7 @@ function useDuplicateGuard(enabled: boolean = true) {
     } catch (_) {}
   }, []);
 
-  return { isDuplicate: enabled && isDuplicate && !dismissed, takeOver };
+  return { isDuplicate: enabled && isDuplicate && !dismissed, takeOver, blockedByShow };
 }
 
 function AppHeader() {
@@ -170,7 +194,14 @@ function AppHeader() {
       <ModeTabBar
         outputOpen={outputOpen}
         onOutputOn={handleOutputOn}
-        onOutputOff={closeOutputWindow}
+        onOutputOff={() => {
+          // SET LIST / OFF は隣接ボタン。本番中の誤タップで客前の LED が
+          // 消えるので、ショー進行中だけ一度だけ確認する。
+          if ((window as any).__cdsActive || (window as any).__cdsOverlayActive) {
+            if (!confirm("ショー進行中です。サブディスプレイ（LED / プロジェクター）を消しますか？")) return;
+          }
+          closeOutputWindow();
+        }}
       />
     </div>
   );
@@ -193,7 +224,7 @@ function UndoListener() {
   return null;
 }
 
-function DuplicateWarning({ onTakeOver }: { onTakeOver: () => void }) {
+function DuplicateWarning({ onTakeOver, blockedByShow }: { onTakeOver: () => void; blockedByShow?: boolean }) {
   return (
     <div className="h-screen w-full flex items-center justify-center" style={{ background: "#262624" }}>
       <div
@@ -216,24 +247,28 @@ function DuplicateWarning({ onTakeOver }: { onTakeOver: () => void }) {
           className="text-lg font-bold mb-3"
           style={{ color: "rgba(250,204,21,0.9)", fontFamily: "'Noto Sans JP', 'Inter', sans-serif" }}
         >
-          既に起動中です
+          {blockedByShow ? "本番進行中です" : "既に起動中です"}
         </h2>
         <p
           className="text-sm mb-6"
           style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Noto Sans JP', 'Inter', sans-serif", lineHeight: 1.6 }}
         >
-          COUNT DOWN STUDIO は別のタブまたはウィンドウで既に開かれています。複数同時に起動すると競合が発生する可能性があります。
+          {blockedByShow
+            ? "別のウィンドウでショーが進行中のため、こちらには切り替えられません。進行中の画面を操作してください（このタブは閉じて大丈夫です）。"
+            : "COUNT DOWN STUDIO は別のタブまたはウィンドウで既に開かれています。複数同時に起動すると競合が発生する可能性があります。"}
         </p>
         <div className="flex gap-3 justify-center">
           <button
             className="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all"
             style={{
-              background: "rgba(193,134,200,0.8)",
-              color: "#fff",
-              border: "1px solid rgba(193,134,200,0.9)",
+              background: blockedByShow ? "rgba(120,120,112,0.35)" : "rgba(193,134,200,0.8)",
+              color: blockedByShow ? "rgba(255,255,255,0.45)" : "#fff",
+              border: blockedByShow ? "1px solid rgba(120,120,112,0.5)" : "1px solid rgba(193,134,200,0.9)",
               fontFamily: "'Noto Sans JP', 'Inter', sans-serif",
+              cursor: blockedByShow ? "not-allowed" : "pointer",
             }}
             onClick={onTakeOver}
+            disabled={blockedByShow}
             data-testid="button-take-over"
           >
             こちらで使用する
@@ -250,14 +285,14 @@ function AppLayout() {
   // AppHeader = SET LIST / SHOW ON-OFF ボタンが出ると邪魔なので)
   const isOutput = location === "/output" || location === "/output-firebase";
   const isHome = location === "/";
-  const { isDuplicate, takeOver } = useDuplicateGuard(!isOutput && !isHome);
+  const { isDuplicate, takeOver, blockedByShow } = useDuplicateGuard(!isOutput && !isHome);
 
   if (isOutput || isHome) {
     return <Router />;
   }
 
   if (isDuplicate) {
-    return <DuplicateWarning onTakeOver={takeOver} />;
+    return <DuplicateWarning onTakeOver={takeOver} blockedByShow={blockedByShow} />;
   }
 
   return (

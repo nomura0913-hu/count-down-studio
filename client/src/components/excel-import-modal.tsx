@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { toHalfWidth } from "@/lib/time-utils";
 
 // ============================================================
 // Excel / CSV Import Modal — flexible enough for real 進行表
@@ -98,7 +99,9 @@ function isNumericCell(s: string): boolean {
 }
 
 function isTimeCell(s: string): boolean {
-  const t = s.trim();
+  // 進行表は全角（４：３０）で書かれていることがある。既存の toHalfWidth を
+  // 通さないと尺が全部 0:00 で取り込まれていた。
+  const t = toHalfWidth(s).trim();
   if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(t)) return true;
   // Some sheets emit time as e.g. "1:30 (h)" — accept the leading time portion.
   if (/^\d{1,2}:\d{2}(:\d{2})?\s/.test(t)) return true;
@@ -106,7 +109,7 @@ function isTimeCell(s: string): boolean {
 }
 
 function parseTimeSeconds(s: string): number {
-  const t = String(s).trim();
+  const t = toHalfWidth(String(s)).trim();
   const m = t.match(/^(\d+):(\d{2})(?::(\d{2}))?/);
   if (!m) return 0;
   const a = parseInt(m[1], 10);

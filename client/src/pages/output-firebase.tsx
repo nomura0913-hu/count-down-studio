@@ -99,7 +99,10 @@ export default function OutputFirebase() {
   const status: "idle" | "running" | "paused" | "finished" =
     !snap ? "idle"
     : isCountUp ? (snap.isPaused ? "paused" : snap.isRunning ? "running" : "idle")
-    : remainingSeconds <= 0 && (snap.isRunning || snap.isPaused) ? "finished"
+    // 曲の終わり際に cue を押すと director 側は idle スナップショットを送るため、
+    // isRunning/isPaused に依存すると「終了(赤 00:00)」から「待機(灰 00:00)」へ
+    // 落ちて見えた。尺を持っている＝曲が走っていた、で判定する。
+    : remainingSeconds <= 0 && totalSeconds > 0 ? "finished"
     : snap.isPaused ? "paused"
     : snap.isRunning ? "running"
     : "idle";

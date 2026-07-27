@@ -718,26 +718,13 @@ export function PerformanceEditor({
     if (setlist && !rehearsalFocusedRef.current) setRehearsalValue(setlist.rehearsal || "");
   }, [setlist?.id, setlist?.name, setlist?.doorOpen, setlist?.showTime, setlist?.rehearsal]);
 
+  // 公演情報を編集したら EVENT INFO を即時再送。
+  // 以前はここで interval を張り替えつつ cue を含まない独自の sendInfo を
+  // 使っていたため、開場中に1文字でも編集すると以後 HOLD!/GO! が1秒で
+  // 消える状態になっていた。送信は cue 同梱版（eventInfoSendRef）に一本化する。
   useEffect(() => {
-    if (showingEventInfoRef.current) {
-      clearInterval(eventInfoIntervalRef.current);
-      const sendInfo = () => {
-        broadcast({
-          formattedTime: "--:--",
-          status: "idle",
-          progress: 0,
-          remainingSeconds: 0,
-          showEventInfo: true,
-          eventConcertTitle: setlistNameValueRef.current || "",
-          eventDoorOpen: doorOpenValueRef.current || null,
-          eventShowTime: showTimeValueRef.current || null,
-          eventRehearsal: rehearsalValueRef.current || null,
-        });
-      };
-      sendInfo();
-      eventInfoIntervalRef.current = setInterval(sendInfo, 1000);
-    }
-  }, [setlistNameValue, doorOpenValue, showTimeValue, rehearsalValue, broadcast]);
+    if (showingEventInfoRef.current) eventInfoSendRef.current?.();
+  }, [setlistNameValue, doorOpenValue, showTimeValue, rehearsalValue]);
 
   const commitSetlistName = () => {
     setlistNameFocusedRef.current = false;

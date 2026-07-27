@@ -77,7 +77,9 @@ export const undoManager = {
       const setlistExists = allSetlists.some((s) => s.id === snapshot.setlistId);
 
       if (!setlistExists) {
-        await localDB.restoreSetlist(snapshot.setlist);
+        // isActive は「今どの公演をやっているか」であって編集履歴で巻き戻す対象
+        // ではない。復活時は非アクティブで戻す（二重 active の入口を塞ぐ）。
+        await localDB.restoreSetlist({ ...snapshot.setlist, isActive: false });
       } else {
         // Restore ALL setlist fields, not just name/description/isActive.
         // Otherwise undo of a song change wipes any door/show/rehearsal change
@@ -85,7 +87,8 @@ export const undoManager = {
         await localDB.updateSetlist(snapshot.setlistId, {
           name: snapshot.setlist.name,
           description: snapshot.setlist.description,
-          isActive: snapshot.setlist.isActive,
+          // isActive は復元しない（undo で active が2つになり、次回起動時に
+          // 違う公演が開く事故になっていた）
           doorOpen: snapshot.setlist.doorOpen,
           showTime: snapshot.setlist.showTime,
           rehearsal: snapshot.setlist.rehearsal,

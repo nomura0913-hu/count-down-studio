@@ -398,6 +398,42 @@ export default function Manage() {
   // サマリー表示中に cue を重ねて再送するための「最後に送ったサマリー state」
   const lastSummaryPayloadRef = useRef<Parameters<typeof broadcast>[0] | null>(null);
 
+  // 公演集計（開始時刻・MC・アンコール）はメモリ上の state だけだったため、
+  // 本番中に /manage を誤って閉じる / リロードすると復元不能に消えていた。
+  // 起動時に 6 時間以内の記録なら拾い直す（翌日の残骸は拾わない）。
+  const CONCERT_TRACK_KEY = "cds-concert-tracking";
+  const CONCERT_TRACK_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+  const trackingRestoredRef = useRef(false);
+  useEffect(() => {
+    if (trackingRestoredRef.current) return;
+    trackingRestoredRef.current = true;
+    try {
+      const raw = localStorage.getItem(CONCERT_TRACK_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (typeof saved?.concertStartAt !== "number") return;
+      if (Date.now() - saved.concertStartAt > CONCERT_TRACK_MAX_AGE_MS) {
+        localStorage.removeItem(CONCERT_TRACK_KEY);
+        return;
+      }
+      stampConcertStart(saved.concertStartAt);
+      if (Array.isArray(saved.mcSegments)) setMcSegments(saved.mcSegments);
+      if (Array.isArray(saved.encoreSegments)) setEncoreSegments(saved.encoreSegments);
+    } catch (_) {}
+  }, [stampConcertStart]);
+  useEffect(() => {
+    try {
+      if (concertStartAt === null) {
+        localStorage.removeItem(CONCERT_TRACK_KEY);
+        return;
+      }
+      localStorage.setItem(
+        CONCERT_TRACK_KEY,
+        JSON.stringify({ concertStartAt, mcSegments, encoreSegments }),
+      );
+    } catch (_) {}
+  }, [concertStartAt, mcSegments, encoreSegments]);
+
   useEffect(() => {
     if (!outputOpen) return;
     // Skip while focus is in any input — otherwise the director typing
@@ -431,11 +467,15 @@ export default function Manage() {
   // never fires a cue. cues changes invalidate the listener so the user
   // sees their edits take effect immediately.
   useEffect(() => {
+    // SHOW OFF（セトリ編集モード）では cue キーを拾わない。編集中のキー入力が
+    // スタッフ / アーティストのスマホに誤った HOLD! / GO! を飛ばしていた。
+    // MIDI 側（handleMidiNoteOn）と同じ基準に揃える。
+    if (!outputOpen) return;
     const isInputFocused = () => {
       const el = document.activeElement as HTMLElement | null;
       if (!el) return false;
       const tag = el.tagName.toLowerCase();
-      return tag === "input" || tag === "textarea" || el.isContentEditable;
+      return tag === "input" || tag === "textarea" || tag === "select" || el.isContentEditable;
     };
     const norm = (k: string) => (k || "").toLowerCase();
     const matchCue = (k: string) => cues.find((c) => norm(c.shortcutKey) === norm(k));
@@ -465,7 +505,7 @@ export default function Manage() {
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("blur", clearOnBlur);
     };
-  }, [cues]);
+  }, [cues, outputOpen]);
 
   const { data: setlists = [], isLoading: loadingSetlists } = useSetlists();
   const [selectedSetlistId, setSelectedSetlistId] = useState<number | null>(null);
@@ -490,6 +530,9 @@ export default function Manage() {
   useEffect(() => {
     if (prevSetlistIdRef.current !== activeSetlist?.id) {
       prevSetlistIdRef.current = activeSetlist?.id;
+      // Cmd+Z の控えは「そのセトリの中身」なので、別のセトリに切り替えたら捨てる。
+      // 残しておくと、今見ていないセトリを画面が無反応のまま黙って巻き戻す。
+      undoManager.clear();
       if (currentSongId !== null) {
         countdown.stop();
         setCurrentSongId(null);
@@ -608,6 +651,11 @@ export default function Manage() {
       toast({ title: "コンサートがまだ始まってないよ" });
       return;
     }
+    // countdown.stop() は status を idle にし、その場で "cds-countdown-idle" を
+    // 撃つ。__cdsOverlayActive を state 経由の effect に任せると、その1フレームの
+    // 隙に保留していた SW 自動リロードが刺さり、出したばかりのサマリーが客の前で
+    // 消える。stop() より前に命令的に立てておく（effect は後から同じ値を書く）。
+    (window as any).__cdsOverlayActive = true;
     countdown.stop();
     setCurrentSongId(null);
     const totalMs = now - startAt;
@@ -645,28 +693,36 @@ export default function Manage() {
   }, [mcSegments, encoreSegments, broadcast, countdown, toast, activeSetlist?.name]);
 
   const resetConcertTracking = useCallback(() => {
-    stampConcertStart(null);
-    segmentStartAtRef.current = null;
-    segmentTypeRef.current = null;
+    // 演奏中（走行・一時停止・曲間）にリセットされたら、集計の基点は「今」に
+    // 打ち直す。null にすると TOTAL TIME が 00:00 のまま死に、RESET ボタンも
+    // disabled になって次の曲まで復帰しない。
+    const live = countdown.status !== "idle";
+    stampConcertStart(live ? Date.now() : null);
+    segmentStartAtRef.current = live ? Date.now() : null;
+    segmentTypeRef.current = live ? segmentTypeRef.current : null;
     setMcSegments([]);
     setEncoreSegments([]);
     setSummaryActive(false);
-    // Clear the summary overlay on the sub-display.
-    broadcast({
-      formattedTime: "--:--",
-      status: "idle",
-      progress: 0,
-      remainingSeconds: 0,
-      showConcertSummary: false,
-      summaryTotalMs: 0,
-      summaryMcSegments: [],
-      summaryEncoreSegments: [],
-      summaryStartTime: "",
-      summaryEndTime: "",
-      summaryDate: "",
-      summaryConcertTitle: "",
-    });
-  }, [broadcast]);
+    // サマリーを消す broadcast は「サマリーが出ている時」だけ。無条件に送ると
+    // 曲の再生中/一時停止中に押した瞬間、LED が曲名なしの「--:--」待機画面に
+    // 落ちる（一時停止・曲間は次の操作まで戻らない）。
+    if (summaryActive) {
+      broadcast({
+        formattedTime: "--:--",
+        status: "idle",
+        progress: 0,
+        remainingSeconds: 0,
+        showConcertSummary: false,
+        summaryTotalMs: 0,
+        summaryMcSegments: [],
+        summaryEncoreSegments: [],
+        summaryStartTime: "",
+        summaryEndTime: "",
+        summaryDate: "",
+        summaryConcertTitle: "",
+      });
+    }
+  }, [broadcast, summaryActive, countdown.status, stampConcertStart]);
 
   const startSong = useCallback(
     (index: number) => {

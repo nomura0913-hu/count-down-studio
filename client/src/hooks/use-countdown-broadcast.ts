@@ -387,6 +387,11 @@ export function useCountdownBroadcaster() {
       // Cmd+R), not the director packing up. Closing the projector window
       // here would black out the LED in front of the audience — leave it
       // alive; the reloaded /manage re-adopts it via the alive heartbeat.
+      // 【致命バグ対策】このタブが出力窓を開いたのでなければ、閉じる権利はない。
+      // request-close は localStorage / BroadcastChannel の全体ブロードキャストなので、
+      // 出力窓と無関係なタブ（ホーム画面・重複警告で弾かれたタブ）を閉じただけで
+      // 本番中の LED が落ちていた。ハンドルを持っているタブだけが後始末をする。
+      if (!outputWindowRef.current) return;
       // __cdsOverlayActive: END SHOW サマリー / EVENT INFO 表示中（idle でも客に見えている）。
       if ((window as any).__cdsActive || (window as any).__cdsOverlayActive) return;
       try { localStorage.removeItem(LS_OUTPUT_ALIVE_KEY); } catch (_) {}

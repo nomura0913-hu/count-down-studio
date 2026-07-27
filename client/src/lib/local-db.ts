@@ -107,8 +107,18 @@ export const localDB = {
   },
 
   async createSetlist(data: Omit<LocalSetlist, "id">): Promise<LocalSetlist> {
+    // 「アクティブなセトリは常に1つ」を DB 側で保証する。呼び出し元が
+    // isActive: true で作ると二重 active になり、次回起動で別の公演が開いていた。
     const db = await getDB();
-    const id = (await db.add("setlists", { ...data })) as number;
+    const tx = db.transaction("setlists", "readwrite");
+    if (data.isActive) {
+      const all = await tx.store.getAll();
+      for (const s of all) {
+        if (s.isActive) await tx.store.put({ ...s, isActive: false });
+      }
+    }
+    const id = (await tx.store.add({ ...data })) as number;
+    await tx.done;
     return { ...data, id };
   },
 
